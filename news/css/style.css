@@ -1,0 +1,29 @@
+html,body {
+    height: 98%;
+    width: 98%;
+} 
+
+#map{
+    height: 100%;
+    width: 70%;
+    float: left;
+    border: #2d5d93 solid 1px;
+}
+
+#right{
+    height: 100%;
+    width: 29%;
+    border: #2d5d93 solid 1px;
+    float: right;
+
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#right h2{
+    float: left;
+}
+
+#loader{
+    float: right;
+}
