@@ -12,11 +12,10 @@ $(function() {
         //alert("Your device doesn't support jquery.geolocation.js");
     });
 
-  
-    $("#map").resizable({
+    $("#right").resizable({
         stop: function(event, ui) {
             var width = ($("html").width() - ui.size.width) - 40;
-            $('#right').css('width', width);
+            $('#map').css('width', width);
         }
     });
 
@@ -55,9 +54,11 @@ $(function() {
                         var ac = data.results[0].address_components;
                         for (var i = 0; i < ac.length; i++){
                             if (ac[i].types[0] === 'country'){
-                                get_feed( ac[i].long_name);
+                                //get_feed( ac[i].long_name);
+                                console.log(ac[i].long_name);
                                 //msg = '<p>' + ac[i].long_name + '</p>';
-                                //$('#right-content').html(msg);
+                                $('#country').html(ac[i].long_name);
+                                //$('#right').css('border', 'solid red 1px');
                             }
                         }
                     }
@@ -125,4 +126,6 @@ function get_feed(country){
             });
         }
     });
+
+   
 }
