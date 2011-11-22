@@ -6,7 +6,10 @@ from xml.dom.minidom import parse, parseString
 
 from feeds.models import Source, Article
 
-def fetch_feed(request, id):
+#import simplejson as json
+import json
+
+def get_feed(request, id):
     feed = 'http://feeds.bbci.co.uk/news/uk/rss.xml'
 
     print id
@@ -35,16 +38,41 @@ def fetch_feed(request, id):
         #print items
         for item in items:
             title = item.getElementsByTagName('title')[0].firstChild.nodeValue
-            id = item.getElementsByTagName('guid')[0].firstChild.nodeValue
+            gid = item.getElementsByTagName('guid')[0].firstChild.nodeValue
             date = item.getElementsByTagName('pubDate')[0].firstChild.nodeValue
             description = item.getElementsByTagName('description')[0].firstChild.nodeValue
+            #pub_date = item.getElementsByTagName('pubDate')[0].firstChild.nodeValue
+            #print '->', title, gid, date
 
-            if not Article.objects.filter(source=source, id=id):
-                Article(id=id, title=title, description=description).save()
+            if not Article.objects.select_related().filter(source=source, gid=gid):
+                Article.objects.create(source=source, gid=gid, title=title, description=description)
     else:
         print 'No changes to be done'
 
     return HttpResponse('This is the home page')
+
+def fetch_feed(request, id):
+    #get_feed(request, id)
+    
+    sdict = {}
+    sources = Source.objects.filter(country="UK")
+    
+    for source in sources:
+        #articles = Article.objects.select_related().filter(source=source).order_by('pub_date')[:5]
+        articles = Article.objects.select_related().filter(source=source)[:5]
+        sdict[source.name] = {}
+
+        for a in articles:
+            print dir(a)
+            sdict[source.name][a.gid] = {
+                'title': a.title,
+                'desciption': a.description}
+
+    print sdict
+    return HttpResponse(json.dumps(sdict), mimetype='application/json')
+
+    #return render_to_response('feeds.json', sdict)
+
 
 urlpatterns = patterns('',
     (r'^(?P<id>[A-Z]{2})', fetch_feed),

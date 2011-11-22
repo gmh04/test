@@ -132,7 +132,18 @@ function initMap(location){
         trigger: function(e) {
             get_country(e, function(country){
                 if(country){
-                    console.log(country);
+                    console.log(country); 
+                    url='/srv/feed/UK';
+                    var jqxhr = $.get(url, function(sources) {
+                        console.log(sources); 
+                        $.each(sources, function(articles){
+                            articles = sources[articles];
+                            $.each(articles, function(article){
+                                console.log(articles[article]);
+                            });
+                        });
+                        
+                    });
                 }
             });
         }
