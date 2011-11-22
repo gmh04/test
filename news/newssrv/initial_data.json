@@ -1,0 +1,10 @@
+[
+  {
+    "model": "feeds.source",
+    "pk": 1,
+    "fields": {
+      "name": "BBC",
+      "country": "UK"
+    }
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "model": "newssrv.feeds.Source",
+    "fields": {
+      "country": "UK"
+    }
+  }
+]
