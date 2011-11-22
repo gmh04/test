@@ -1,12 +1,12 @@
 html,body {
     height: 98%;
     width: 98%;
-    
-} 
+
+}
 
 p{
     font-family: Helvetica, sans-serif;
-} 
+}
 
 #map{
     height: 100%;
@@ -21,8 +21,9 @@ p{
     border: #2d5d93 solid 1px;
     float: left;
 
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    /* -moz-border-radius: 5px; */
+    /* border-radius: 5px; */
+    /* border-top-left-radius: 5px; */
 }
 
 #right h2{
@@ -36,8 +37,8 @@ p{
     margin-top: 5px;
     margin-left: 5px;
     padding: 2px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    /* -moz-border-radius: 5px; */
+    /* border-radius: 5px; */
 }
 
 #loader{
