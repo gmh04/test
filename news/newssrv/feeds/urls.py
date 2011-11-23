@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
 from django.http import HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import render_to_response
+
 
 import urllib2
 from xml.dom.minidom import parse, parseString
@@ -31,29 +33,8 @@ def fetch_feeds_by_source(request, id):
     return HttpResponse(json.dumps(sdict), mimetype='application/json')
 
 def fetch_articles(request, id):
-    #get_feed(request, id)
-    aa = []
-    #articles = Article.objects.select_related().filter(source=source).order_by('pub_date')[:5]
-    print id
-    articles = Article.objects.filter(source__country='UK')
-    #sdict[source.name] = {}
-    print '->'
-
-    for a in articles:
-        aa.append({
-            'title': a.title,
-            'description': a.description
-            })
-        #print dir(a)
-        #sdict[source.name][a.gid] = {
-        #    'title': a.title,
-        #    'desciption': a.description}
-
-    print aa
-    return HttpResponse(json.dumps(aa), mimetype='application/json')
-
-    #return render_to_response('feeds.json', sdict)
-
+    articles = Article.objects.filter(source__country=id)[:20]
+    return render_to_response('articles.html', {'articles': articles})
 
 urlpatterns = patterns('',
     (r'^(?P<id>[A-Z]{2})', fetch_articles),

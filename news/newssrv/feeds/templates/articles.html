@@ -1,0 +1,17 @@
+{% if articles %}
+<ul>
+  {% for article in articles %}
+  <li>
+    <div>
+      <div>
+        <a href="{{ article.source.id }}">{{ article.source.name }}</a>
+      </div>
+      <div>
+        <a href="">{{ article.title }}</a>
+        <p>{{ article.description|truncatewords:20}}<p>
+      </div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}

@@ -136,13 +136,13 @@ function initMap(location){
                     url='/srv/feed/UK';
                     var jqxhr = $.get(url, function(sources) {
                         console.log(sources); 
-                        $.each(sources, function(articles){
-                            articles = sources[articles];
-                            $.each(articles, function(article){
-                                console.log(articles[article]);
-                            });
-                        });
-                        
+                        $('#feed-content').html(sources);
+                        // $.each(sources, function(articles){
+                        //     articles = sources[articles];
+                        //     $.each(articles, function(article){
+                        //         console.log(articles[article]);
+                        //     });
+                        // });                        
                     });
                 }
             });

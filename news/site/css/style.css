@@ -15,7 +15,7 @@ p{
     border: #2d5d93 solid 1px;
 }
 
-#right{
+#feed{
     height: 100%;
     width: 29%;
     border: #2d5d93 solid 1px;
@@ -24,9 +24,12 @@ p{
     /* -moz-border-radius: 5px; */
     /* border-radius: 5px; */
     /* border-top-left-radius: 5px; */
+
+    /* max-height: 200px; */
+    overflow: auto;
 }
 
-#right h2{
+#feed h2{
     float: left;
 }
 
