@@ -1,8 +1,10 @@
 [
   {
     "model": "newssrv.feeds.Source",
-    "fields": {
-      "country": "UK"
+    'fields': {
+      'country': 'UK',
+      'name': 'BBC',
+      'url': 'http://feeds.bbci.co.uk/news/uk/rss.xml'
     }
   }
 ]

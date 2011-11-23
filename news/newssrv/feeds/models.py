@@ -4,6 +4,8 @@ from django_countries import CountryField
 class Source(models.Model):
     country = CountryField()
     name = models.CharField(max_length=32)
+    url = models.CharField(max_length=128)
+
     last_updated = models.DateTimeField(null=True)
 
 class Article(models.Model):
