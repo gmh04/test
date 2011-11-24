@@ -17,13 +17,12 @@ $(function() {
     initMap(loc);
 
     // make panes resizeable
-    $("#feed").resizable({
+    $("#feed-wrapper").resizable({
         stop: function(event, ui) {
             var width = ($("html").width() - ui.size.width) - 40;
             $('#map').css('width', width);
         }
     });
-
 });
 
 function initMap(location){

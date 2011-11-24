@@ -1,8 +1,11 @@
 from django.conf.urls.defaults import *
+from django.core.exceptions import ObjectDoesNotExist
+from django_countries.fields import Country
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render_to_response
 
 import urllib2
+
 from xml.dom.minidom import parse, parseString
 
 from feeds.models import Source, Article
@@ -28,8 +31,15 @@ def fetch_feeds_by_source(request, id):
     return HttpResponse(json.dumps(sdict), mimetype='application/json')
 
 def fetch_articles(request, id):
-    country = Source.objects.get(country=id).country.name
-    articles = Article.objects.filter(source__country=id).order_by('-date')[:20]
+    country = None
+    articles = None
+    
+    try:
+        country = Source.objects.get(country=id).country.name
+        articles = Article.objects.filter(source__country=id).order_by('-date')[:20]
+    except ObjectDoesNotExist:
+        country = Country(code=id).name
+
     return render_to_response('articles.html', {'articles': articles,
                                                 'country': country})
 

@@ -1,11 +1,16 @@
 html,body {
     height: 98%;
     width: 98%;
+    font-family: Arial, Verdana;
+    font-size: 12px;
+}
 
+h3{
+    font-size: 14px;
 }
 
 p{
-    font-family: Helvetica, sans-serif;
+    font-size: 12px;
 }
 
 #map{
@@ -15,10 +20,17 @@ p{
     border: #2d5d93 solid 1px;
 }
 
-#feed{
+#feed-wrapper{
     height: 100%;
-    width: 29%;
+    width: 28.5%;
     border: #2d5d93 solid 1px;
+    float: left;
+}
+
+#feed{
+    height: 99%;
+    width: 98.5%;
+    /* border: #2d5d93 solid 1px; */
     float: left;
 
     /* -moz-border-radius: 5px; */
@@ -29,8 +41,45 @@ p{
     overflow: auto;
 }
 
-#feed h2{
+#feed{
+    /* border: red solid 1px; */
+}
+
+#feed ul{
+    /* border: red solid 1px; */
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#feed li{
+    border: red solid 1px;
+    height: 120px;
+}
+
+#feed h3{
+    /* float: left; */
+    text-align: center;
+}
+
+#feed-source{
+    /* float: left; */
+    /* border: red solid 1px; */
+    height: 100%;
+    width: 25%;
     float: left;
+}
+
+#feed-details{
+    /* border: blue solid 1px; */
+    width: 70%;
+    /* position: absolute; */
+    float: right;
+}
+
+#article-date{
+    font-size: 10px;
+    /* float: right; */
 }
 
 #country{
@@ -58,4 +107,3 @@ div.olControlPanZoomBar{
     position: relative !important;
     float: right;
 }
-
