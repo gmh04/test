@@ -49,6 +49,10 @@ p{
 }
 
 div.olControlPanZoom{
+    display: none;
+}
+
+div.olControlPanZoomBar{
     width: 50px;
     height: 130px;
     position: relative !important;

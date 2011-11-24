@@ -1,15 +1,17 @@
+<h3>News Feed for {{ country }}</h3>
 {% if articles %}
 <ul>
   {% for article in articles %}
   <li>
     <div>
       <div>
-        <a href="{{ article.source.id }}">{{ article.source.name }}</a>
+        <a href="{{ article.source.site_url }}">{{ article.source.name }}</a>
       </div>
       <div>
-        <a href="">{{ article.title }}</a>
+        <a href="{{ article.url }}">{{ article.title }}</a>
         <p>{{ article.description|truncatewords:20}}<p>
       </div>
+      <div>{{ article.date }}</div>
     </div>
   </li>
   {% endfor %}

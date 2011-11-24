@@ -1,12 +1,17 @@
+from datetime import datetime
+import dateutil.parser
 from urllib2 import URLError, HTTPError
-from xml.dom.minidom import parse
 
+from lxml import etree
+
+import email.utils
+import pytz
+import time
 import urllib2
 
 from django.core.management.base import BaseCommand, CommandError
 
 from newssrv.feeds.models import Article, Source
-
 
 class Command(BaseCommand):
     args = '<poll_id poll_id ...>'
@@ -16,34 +21,79 @@ class Command(BaseCommand):
         sources = Source.objects.all()
 
         for source in sources:
-            print source.name, source.url
 
             try:
-                page = urllib2.urlopen(source.url)
-                last_update = page.headers['last-modified']
-                print last_update
+                # fetch feed
+                page = urllib2.urlopen(source.feed_url)
 
-                dom = parse(page)
-                last_update = dom.getElementsByTagName('lastBuildDate')[0]
+                if 'last-modified' in page.headers:
+                    last_modified = self.str2date(page.headers['last-modified'])
+                    last_modified = last_modified.astimezone(pytz.utc)
+                if not last_modified:
+                    last_modified = datetime.utcnow()
 
-                print source.last_updated
+                # remove timezone to allow compare
+                last_modified = last_modified.replace(tzinfo=None)
 
-                if source.last_updated < last_update:
-                    print 'update feeds'
+                # parse page for XML processing
+                tree = etree.parse(page)
+                if not source.last_updated or source.last_updated < last_modified:
+                    self.update_source(tree, source)
 
-                    items = dom.getElementsByTagName('item')
+                    items = tree.xpath('/rss/channel/item')
                     for item in items:
-                        title = item.getElementsByTagName('title')[0].firstChild.nodeValue
-                        gid = item.getElementsByTagName('guid')[0].firstChild.nodeValue
-                        date = item.getElementsByTagName('pubDate')[0].firstChild.nodeValue
-                        description = item.getElementsByTagName('description')[0].firstChild.nodeValue
-                        #pub_date = item.getElementsByTagName('pubDate')[0].firstChild.nodeValue
-                        #print '->', title, gid, date
+                        self.update_article(item, source)
 
-                        if not Article.objects.select_related().filter(source=source, gid=gid):
-                            Article.objects.create(source=source, gid=gid, title=title, description=description)
                 else:
                     print 'No changes to be done'
 
             except (URLError, HTTPError) as e:
                 print e
+
+    def str2date(self, str):
+        dt = dateutil.parser.parse(str)
+
+        # convert to UTC, django will store
+        return  dt.astimezone(pytz.utc)
+
+    def update_source(self, tree, source):
+        # update source incase it has changed
+        source.last_updated =  self.str2date(tree.xpath('/rss/channel/lastBuildDate')[0].text)
+        source.name = tree.xpath('/rss/channel/title')[0].text
+        source.site_url = tree.xpath('/rss/channel/link')[0].text
+
+        language = tree.xpath('/rss/channel/language')
+        if len(language):
+            source.language = tree.xpath('/rss/channel/language')[0].text
+
+        source.save()
+
+    def update_article(self, item, source):
+        url = item.find('link').text
+        gid = item.find('guid')
+
+        if gid:
+            gid = gid.text
+        else:
+            # use url if no gid
+            gid = url
+
+        if not Article.objects.select_related().filter(source=source, gid=gid):
+            # only insert if article is new
+            #self.update_article(item, gid, source)
+
+            title = item.find('title').text;
+            description = item.find('description').text
+            #url = item.find('link').text
+
+            datestr = item.find('pubDate').text
+            pub_date = self.str2date(datestr)
+
+            print 'add %s' %title
+
+            Article.objects.create(source=source,
+                                   gid=gid,
+                                   title=title,
+                                   description=description,
+                                   date=pub_date,
+                                   url=url)

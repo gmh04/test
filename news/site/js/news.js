@@ -17,7 +17,7 @@ $(function() {
     initMap(loc);
 
     // make panes resizeable
-    $("#right").resizable({
+    $("#feed").resizable({
         stop: function(event, ui) {
             var width = ($("html").width() - ui.size.width) - 40;
             $('#map').css('width', width);
@@ -25,41 +25,6 @@ $(function() {
     });
 
 });
-
-function get_feed(country){
-    head = '<h2>Fetching for ' + country + '</h2>';
-    wait = '<div id="loader"><img src="images/ajax-loader.gif"></img></div>'
-    url = '/ms'
-
-    //msg = '<p>' + ac[i].long_name + '</p>';
-    $('#right-content').html(head);
-    $('#right-content').append(wait);
-
-    // $.get(url, function(data) {
-    //     console.log(data);
-    //     var title = data.find('channel');
-    //     console.log(title);
-    // });
-
-    $.ajax({
-	type: "GET",
-	url: url,
-	dataType: "xml",
-	success: function(xml) {
-            console.log('=>');
-            console.log(xml);
-            var channel = $(xml).find('channel');
-            console.log(channel);
-            //console.log($(channel.find('description'));
-	    $(xml).find('channel').each(function(c){
-                console.log(c);
-                console.log($this);
-            });
-        }
-    });
-
-
-}
 
 function initMap(location){
     map = new OpenLayers.Map("map");
@@ -132,17 +97,9 @@ function initMap(location){
         trigger: function(e) {
             get_country(e, function(country){
                 if(country){
-                    console.log(country); 
-                    url='/srv/feed/UK';
+                    url='/srv/feed/' + country.id;
                     var jqxhr = $.get(url, function(sources) {
-                        console.log(sources); 
                         $('#feed-content').html(sources);
-                        // $.each(sources, function(articles){
-                        //     articles = sources[articles];
-                        //     $.each(articles, function(article){
-                        //         console.log(articles[article]);
-                        //     });
-                        // });                        
                     });
                 }
             });
@@ -155,6 +112,8 @@ function initMap(location){
     var click = new OpenLayers.Control.Click();
     map.addControl(click);
     click.activate();
+
+    map.addControl(new OpenLayers.Control.PanZoomBar());
 
     map.setCenter(new OpenLayers.LonLat(loc.longitude, loc.latitude).transform(
         new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
@@ -178,8 +137,6 @@ function get_country(event, func){
                 var ac = data.results[0].address_components;
                 for (var i = 0; i < ac.length; i++){
                     if (ac[i].types[0] === 'country'){
-                        //console.log('-->' + ac[i].long_name);
-                        //country = ac[i].long_name;
                         country = {
                             'id': ac[i].short_name,
                             'name': ac[i].long_name
