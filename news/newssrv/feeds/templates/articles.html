@@ -1,21 +1,24 @@
 {% if articles %}
-<h3>News Feed for {{ country }}</h3>
+<h3>News from {{ country }}</h3>
 <ul>
   {% for article in articles %}
   <li>
-    <div>
-      <div id="feed-source">
-        <a href="{{ article.source.site_url }}">{{ article.source.name }}</a>
-      </div>
-      <div id="feed-details">
-        <a href="{{ article.url }}">{{ article.title }}</a>
-        <p>{{ article.description|truncatewords:20}}<p>
-          <div id="article-date">{{ article.date }}</div>
-      </div>
+    <div id="feed-article">
+        <div id="feed-article-title">
+          <a href="{{ article.url }}">{{ article.title }}</a>
+        </div>
+        <div id="feed-source">
+          <a href="{{ article.source.site_url }}">{{ article.source.name }}</a>
+        </div>
+        <div id="feed-article-description">
+          <p>{{ article.description|truncatewords:20}} <a href="">more</a></p>
+        </div>
+
+        <div id="feed-article-date">{{ article.date }}</div>
     </div>
   </li>
   {% endfor %}
 </ul>
 {% else %}
-<h3>No Feed for {{ country }}</h3>
+<h3>No News from {{ country }}</h3>
 {% endif %}

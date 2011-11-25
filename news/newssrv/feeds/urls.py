@@ -12,12 +12,12 @@ from feeds.models import Source, Article
 
 import json
 
+
 def fetch_feeds_by_source(request, id):
     sdict = {}
     sources = Source.objects.filter(country="UK")
 
     for source in sources:
-        #articles = Article.objects.select_related().filter(source=source).order_by('pub_date')[:5]
         articles = Article.objects.select_related().filter(source=source)[:5]
         sdict[source.name] = {}
 
@@ -30,13 +30,15 @@ def fetch_feeds_by_source(request, id):
     print sdict
     return HttpResponse(json.dumps(sdict), mimetype='application/json')
 
+
 def fetch_articles(request, id):
     country = None
     articles = None
-    
+
     try:
         country = Source.objects.get(country=id).country.name
-        articles = Article.objects.filter(source__country=id).order_by('-date')[:20]
+        articles = Article.objects.filter(
+            source__country=id).order_by('-date')[:20]
     except ObjectDoesNotExist:
         country = Country(code=id).name
 

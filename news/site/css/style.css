@@ -3,14 +3,33 @@ html,body {
     width: 98%;
     font-family: Arial, Verdana;
     font-size: 12px;
+    /* color: black; */
+    font-weight: normal;
+    font-size: 12px;
 }
 
 h3{
+    color: #36557e;
     font-size: 14px;
 }
 
-p{
-    font-size: 12px;
+a:link {
+    text-decoration: none;
+    color: #1122cc
+    font-weight: bold;
+}
+
+a:visited {
+    color: #36557e;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+
 }
 
 #map{
@@ -30,67 +49,82 @@ p{
 #feed{
     height: 99%;
     width: 98.5%;
-    /* border: #2d5d93 solid 1px; */
     float: left;
-
-    /* -moz-border-radius: 5px; */
-    /* border-radius: 5px; */
-    /* border-top-left-radius: 5px; */
-
-    /* max-height: 200px; */
     overflow: auto;
 }
 
-#feed{
-    /* border: red solid 1px; */
-}
-
 #feed ul{
-    /* border: red solid 1px; */
     list-style-type: none;
     padding: 0px;
     margin: 0px;
 }
 
-#feed li{
-    border: red solid 1px;
-    height: 120px;
-}
-
 #feed h3{
-    /* float: left; */
     text-align: center;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+
+    /* border: 1px solid r#2d5d93; */
+    background-color: #2d5d93;
+    color: white;
+    padding: 0.2em;
+
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    margin-left: 0.3em;
+    margin-right: 0.3em;
 }
 
-#feed-source{
-    /* float: left; */
-    /* border: red solid 1px; */
-    height: 100%;
-    width: 25%;
-    float: left;
+#feed-article{
+    border: #2d5d93 solid 1px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    margin-bottom: 0.5em;
+    margin-left: 0.3em;
+    margin-right: 0.3em;
 }
 
-#feed-details{
-    /* border: blue solid 1px; */
+#feed-article-title{
+    padding-left: 0.2em;
+    padding-top: 0.2em;
+    font-size: 13px;
+    text-weight: bold;
+}
+
+#feed-article-description{
     width: 70%;
-    /* position: absolute; */
     float: right;
 }
 
-#article-date{
+#feed-source{
+    float: left;
+    width: 20%;
+    padding: 1em;
+}
+
+#feed-article-date{
+    clear: both;
     font-size: 10px;
-    /* float: right; */
+    position: relative;
+    right: -65%;
 }
 
 #country{
+    border: #2d5d93 solid 1px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: white;
+
+    font-weight: bold;
+    font-size: 14px;
+
     position: absolute;
     z-index: 1000;
-    border: solid 1px red;
     margin-top: 5px;
     margin-left: 5px;
-    padding: 2px;
-    /* -moz-border-radius: 5px; */
-    /* border-radius: 5px; */
+    padding: 1em;
 }
 
 #loader{

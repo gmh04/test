@@ -13,9 +13,8 @@ from django.core.management.base import BaseCommand, CommandError
 
 from newssrv.feeds.models import Article, Source
 
+
 class Command(BaseCommand):
-    args = '<poll_id poll_id ...>'
-    help = 'Closes the specified poll for voting'
 
     def handle(self, *args, **options):
         sources = Source.objects.all()
@@ -27,7 +26,8 @@ class Command(BaseCommand):
                 page = urllib2.urlopen(source.feed_url)
 
                 if 'last-modified' in page.headers:
-                    last_modified = self.str2date(page.headers['last-modified'])
+                    last_modified = self.str2date(
+                        page.headers['last-modified'])
                     last_modified = last_modified.astimezone(pytz.utc)
                 if not last_modified:
                     last_modified = datetime.utcnow()
@@ -37,7 +37,8 @@ class Command(BaseCommand):
 
                 # parse page for XML processing
                 tree = etree.parse(page)
-                if not source.last_updated or source.last_updated < last_modified:
+                if not source.last_updated or \
+                       source.last_updated < last_modified:
                     self.update_source(tree, source)
 
                     items = tree.xpath('/rss/channel/item')
@@ -58,7 +59,8 @@ class Command(BaseCommand):
 
     def update_source(self, tree, source):
         # update source incase it has changed
-        source.last_updated =  self.str2date(tree.xpath('/rss/channel/lastBuildDate')[0].text)
+        source.last_updated = self.str2date(
+            tree.xpath('/rss/channel/lastBuildDate')[0].text)
         source.name = tree.xpath('/rss/channel/title')[0].text
         source.site_url = tree.xpath('/rss/channel/link')[0].text
 
@@ -72,7 +74,7 @@ class Command(BaseCommand):
         url = item.find('link').text
         gid = item.find('guid')
 
-        if gid:
+        if gid is not None:
             gid = gid.text
         else:
             # use url if no gid
@@ -82,14 +84,14 @@ class Command(BaseCommand):
             # only insert if article is new
             #self.update_article(item, gid, source)
 
-            title = item.find('title').text;
+            title = item.find('title').text
             description = item.find('description').text
             #url = item.find('link').text
 
             datestr = item.find('pubDate').text
             pub_date = self.str2date(datestr)
 
-            print 'add %s' %title
+            print 'add %s' % title
 
             Article.objects.create(source=source,
                                    gid=gid,

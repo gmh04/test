@@ -7,6 +7,7 @@ from django.conf.urls.defaults import *
 
 #import newssrv.feeds.urls
 
+
 urlpatterns = patterns('',
     # Example:
     (r'^feed/', include('newssrv.feeds.urls')),
