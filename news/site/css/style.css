@@ -69,8 +69,8 @@ a:active {
     color: white;
     padding: 0.2em;
 
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    /* -moz-border-radius: 5px; */
+    /* border-radius: 5px; */
 
     margin-left: 0.3em;
     margin-right: 0.3em;
@@ -108,7 +108,12 @@ a:active {
     clear: both;
     font-size: 10px;
     position: relative;
-    right: -65%;
+    right: -60%;
+}
+
+#suggest-feed{
+    margin-left: 0.3em;
+    margin-right: 0.3em;
 }
 
 #country{

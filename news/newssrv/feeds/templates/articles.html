@@ -1,5 +1,5 @@
 {% if articles %}
-<h3>News from {{ country }}</h3>
+<h3>News from {{ country.name }}</h3>
 <ul>
   {% for article in articles %}
   <li>
@@ -20,5 +20,6 @@
   {% endfor %}
 </ul>
 {% else %}
-<h3>No News from {{ country }}</h3>
+<h3>No News from {{ country.name }}</h3>
+{% include "suggest.html" with country_id="{{ country.code }}" %}
 {% endif %}

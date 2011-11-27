@@ -1,5 +1,8 @@
 var map;
 
+
+SERVER_URL='http://localhost/srv/feed/'
+
 $(function() {
 
     // default location
@@ -23,6 +26,8 @@ $(function() {
             $('#map').css('width', width);
         }
     });
+
+  
 });
 
 function initMap(location){
@@ -96,9 +101,10 @@ function initMap(location){
         trigger: function(e) {
             get_country(e, function(country){
                 if(country){
-                    url='/srv/feed/' + country.id;
+                    url = SERVER_URL + country.id;
                     var jqxhr = $.get(url, function(sources) {
                         $('#feed-content').html(sources);
+                        $("#suggest-feed-form").submit(submitFeedSugestion);
                     });
                 }
             });
@@ -149,4 +155,22 @@ function get_country(event, func){
             }
         }
     });
+}
+
+function submitFeedSugestion(arg, arg2){
+    console.log($('input[name="url"]').val());
+    console.log($('#country').val());
+
+    
+    var url = SERVER_URL + 'suggest/' + $('#country').val() + '/?url=' + encodeURIComponent($('input[name="url"]').val());
+
+    console.log('->');
+    console.log( url);
+    var jqxhr = $.get(url, function(result){
+        //console.log('crivvens');
+        $('#suggest-feed-response').html(result);
+    });
+
+
+    return false;
 }

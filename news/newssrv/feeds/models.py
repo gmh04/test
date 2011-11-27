@@ -5,7 +5,7 @@ from django_countries import CountryField
 class Source(models.Model):
     country = CountryField()
     name = models.CharField(max_length=32)
-    feed_url = models.CharField(max_length=128)
+    feed_url = models.CharField(max_length=128, unique=True)
     site_url = models.CharField(max_length=128)
     last_updated = models.DateTimeField(null=True)
     language = models.CharField(max_length=5)

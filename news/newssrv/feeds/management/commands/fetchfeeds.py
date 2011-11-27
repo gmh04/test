@@ -1,9 +1,9 @@
 from datetime import datetime
-import dateutil.parser
 from urllib2 import URLError, HTTPError
 
 from lxml import etree
 
+import dateutil.parser
 import email.utils
 import pytz
 import time
