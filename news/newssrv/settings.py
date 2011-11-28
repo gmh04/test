@@ -1,5 +1,8 @@
-# Django settings for newssrv project.
 import os
+import socket
+
+from ConfigParser import RawConfigParser
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,14 +15,35 @@ MANAGERS = ADMINS
 
 PROJECT_ROOT = os.path.dirname(__file__)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'news.db',
-        'USER': '',
-        'PASSWORD': '',
+config = RawConfigParser()
+config_file = os.path.expanduser(os.sep.join(('~', '.news', 'config.ini')))
+config.read(config_file)
+
+print '*', config_file
+print '**', os.path
+
+hostname = socket.gethostname()
+
+if hostname == 'ip-10-227-51-57':
+    DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'news',
+        'USER': 'gmh04',
+        'PASSWORD': config.get('database', 'DATABASE_PASSWORD'),
         'HOST': '',
         'PORT': '',
+    }
+}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'news.db',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
     }
 }
 
