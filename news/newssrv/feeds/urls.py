@@ -28,7 +28,7 @@ def fetch_feeds_by_source(request, id):
                 'title': a.title,
                 'desciption': a.description}
 
-    print sdict
+    #print sdict
     return HttpResponse(json.dumps(sdict), mimetype='application/json')
 
 
@@ -45,6 +45,7 @@ def fetch_articles(request, id):
 
     return render_to_response('articles.html', {'articles': articles,
                                                 'country': country})
+
 
 def suggest_feed(request, country_id):
     success = False
@@ -73,7 +74,6 @@ def suggest_feed(request, country_id):
     return render_to_response('suggest_response.html',
                               {'success': success,
                                'message': message})
-
 
 
 urlpatterns = patterns('',

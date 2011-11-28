@@ -1,5 +1,5 @@
 from edina.admin import Fabric
-from fabric.api import hosts
+from fabric.api import hosts, env
 
 def install_dev():
     """Set up DEV environment"""
@@ -10,12 +10,23 @@ def install_beta():
     """Set up BETA environment"""
     Fabric('news').install('newssrv')
 
-@hosts('gmh04@10.227.51.57')
+@hosts('gmh04@ec2-176-34-202-77.eu-west-1.compute.amazonaws.com')
 def install_live():
     """Set up LIVE environment"""
+    env.key_filename = '/home/george/.ssh/gmh04.pem'
     Fabric('news').install('newssrv')
 
 @hosts('ghamilt2@devel.edina.ac.uk')
-def deploy_server_live():
+def deploy_beta():
+    """Deploy BETA server"""
+    Fabric('news').deploy('newssrv')
+
+@hosts('gmh04@ec2-176-34-202-77.eu-west-1.compute.amazonaws.com')
+def deploy_live():
     """Release LIVE server"""
-    Fabric('news').release('newssrv', do_django_tests=True)
+    env.key_filename = '/home/george/.ssh/gmh04.pem'
+    Fabric('news', apache_dir='/etc/init.d/apache2').release('newssrv', do_django_tests=True)
+
+@hosts('gmh04@ec2-176-34-202-77.eu-west-1.compute.amazonaws.com')
+def restore():
+    Fabric('news').restore('newssrv')
