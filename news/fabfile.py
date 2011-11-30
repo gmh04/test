@@ -1,6 +1,8 @@
 from edina.admin import Fabric
 from fabric.api import hosts, env
 
+import os
+
 def install_dev():
     """Set up DEV environment"""
     Fabric('news').install('newssrv')
@@ -24,7 +26,7 @@ def deploy_beta():
 @hosts('gmh04@ec2-46-137-118-145.eu-west-1.compute.amazonaws.com')
 def deploy_live():
     """Release LIVE server"""
-    env.key_filename = '/home/george/.ssh/gmh04.pem'
+    env.key_filename = os.sep.join((os.environ['HOME'], '.ssh', 'gmh04.pem'))
     #Fabric('news', apache_dir='/etc/init.d/apache2').release('newssrv', do_django_tests=True)
     Fabric('news', apache_dir='/etc/init.d/apache2').deploy('newssrv')
 

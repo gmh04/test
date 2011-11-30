@@ -1,7 +1,8 @@
 var map;
 
 
-SERVER_URL='http://localhost/srv/feed/'
+//SERVER_URL='http://localhost/srv/feed/'
+SERVER_URL='/srv/feed/'
 
 $(function() {
 

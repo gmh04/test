@@ -19,9 +19,6 @@ config = RawConfigParser()
 config_file = os.path.expanduser(os.sep.join(('~', '.news', 'config.ini')))
 config.read(config_file)
 
-print '*', config_file
-print '**', os.path
-
 hostname = socket.gethostname()
 
 if hostname == 'ip-10-227-51-57':
@@ -45,6 +42,10 @@ else:
             'HOST': '',
             'PORT': '',
     }
+}
+
+DATABASE_OPTIONS = {
+    "autocommit": True,
 }
 
 # Local time zone for this installation. Choices can be found here:

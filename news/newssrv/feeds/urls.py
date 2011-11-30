@@ -11,7 +11,7 @@ import urllib2
 from urllib2 import URLError, HTTPError
 from xml.dom.minidom import parse, parseString
 
-from feeds.models import Source, Article
+from newssrv.feeds.models import Source, Article
 
 
 def fetch_feeds_by_source(request, id):

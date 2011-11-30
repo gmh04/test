@@ -25,6 +25,7 @@ class Command(BaseCommand):
                 # fetch feed
                 page = urllib2.urlopen(source.feed_url)
 
+                last_modified = None
                 if 'last-modified' in page.headers:
                     last_modified = self.str2date(
                         page.headers['last-modified'])
@@ -91,7 +92,7 @@ class Command(BaseCommand):
             datestr = item.find('pubDate').text
             pub_date = self.str2date(datestr)
 
-            print 'add %s' % title
+            print 'add %s: %s' % (title, gid)
 
             Article.objects.create(source=source,
                                    gid=gid,
