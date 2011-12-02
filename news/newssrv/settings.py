@@ -8,7 +8,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+     ('George Hamilton', 'gmh04@netscape.net'),
 )
 
 MANAGERS = ADMINS
@@ -126,3 +126,10 @@ INSTALLED_APPS = (
     'django_countries',
     'newssrv.feeds',
 )
+
+# smtp settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ghamilt2@gmail.com'
+EMAIL_HOST_PASSWORD = config.get('smtp', 'SMTP_PASSWORD')
+EMAIL_USE_TLS = True
