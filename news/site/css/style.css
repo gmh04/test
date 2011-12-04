@@ -109,6 +109,7 @@ a:active {
     font-size: 10px;
     position: relative;
     right: -60%;
+    width: 14em;
 }
 
 #suggest-feed{

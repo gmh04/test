@@ -15,6 +15,7 @@ from newssrv.feeds.models import Article, Source
 
 
 class Command(BaseCommand):
+    help = 'Populates articles from current feeds'
 
     def handle(self, *args, **options):
         sources = Source.objects.all()
