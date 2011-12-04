@@ -19,6 +19,7 @@
   </li>
   {% endfor %}
 </ul>
+{% include "suggest.html" with country_id="{{ country.code }}" %}
 {% else %}
 <h3>No News from {{ country.name }}</h3>
 {% include "suggest.html" with country_id="{{ country.code }}" %}

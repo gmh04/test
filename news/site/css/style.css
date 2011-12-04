@@ -114,6 +114,7 @@ a:active {
 #suggest-feed{
     margin-left: 0.3em;
     margin-right: 0.3em;
+    padding-bottom: 0.5em;
 }
 
 #country{
