@@ -104,6 +104,7 @@ function initMap(location){
                 if(country){
                     url = SERVER_URL + country.id;
                     var jqxhr = $.get(url, function(sources) {
+                        //$('#feed-content').hide().html(sources).slideDown('slow');
                         $('#feed-content').html(sources);
                         $("#suggest-feed-form").submit(submitFeedSugestion);
                     });
