@@ -3,9 +3,14 @@
 <ul>
   {% for article in articles %}
   <li>
-    <div id="feed-article">
+    <div id="feed-article-{{ article.id }}">
         <div id="feed-article-title">
-          <a href="{{ article.url }}">{{ article.title }}</a>
+          <div id="feed-article-title-link">
+            <a href="{{ article.url }}">{{ article.title }}</a>
+          </div>
+          <div id="feed-article-title-close" title="Remove Article" class="clickable">
+            <img src="images/close.png"/>
+          </div>
         </div>
         <div id="feed-source">
           <a href="{{ article.source.site_url }}">{{ article.source.name }}</a>

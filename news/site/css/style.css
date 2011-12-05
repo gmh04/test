@@ -64,7 +64,6 @@ a:active {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 
-    /* border: 1px solid r#2d5d93; */
     background-color: #2d5d93;
     color: white;
     padding: 0.2em;
@@ -86,11 +85,24 @@ a:active {
     margin-right: 0.3em;
 }
 
-#feed-article-title{
+#feed-article-title-link{
     padding-left: 0.2em;
     padding-top: 0.2em;
-    font-size: 18px;
+    font-size: 16px;
     text-weight: bold;
+    /* border: solid 1px red; */
+    width: 90%;
+    float: left;
+}
+
+#feed-article-title-close{
+    /* border: solid 1px red; */
+    width: 16px;
+    height: 16px;
+    float: right;
+    position: relative;
+    /* right: 10px; */
+    padding: 0.2em;
 }
 
 #feed-article-description{
@@ -147,4 +159,8 @@ div.olControlPanZoomBar{
     height: 130px;
     position: relative !important;
     float: right;
+}
+
+.clickable:hover {
+    cursor: pointer;
 }

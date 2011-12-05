@@ -28,7 +28,16 @@ $(function() {
         }
     });
 
-  
+    $('#feed-article-title-close').live('click', function(event) {
+        console.log('->');
+        // console.log(event);
+        // console.log(this);
+        console.log($(this).parent().parent().attr('id'));
+        var id = $(this).parent().parent().attr('id');
+        $('#' + id).slideUp('slow');
+
+        //$('#book').slideUp('
+    });
 });
 
 function initMap(location){
@@ -159,17 +168,10 @@ function get_country(event, func){
     });
 }
 
-function submitFeedSugestion(arg, arg2){
-    console.log($('input[name="url"]').val());
-    console.log($('#country').val());
-
-    
+function submitFeedSugestion(){
     var url = SERVER_URL + 'suggest/' + $('#country').val() + '/?url=' + encodeURIComponent($('input[name="url"]').val());
 
-    console.log('->');
-    console.log( url);
     var jqxhr = $.get(url, function(result){
-        //console.log('crivvens');
         $('#suggest-feed-response').html(result);
     });
 
