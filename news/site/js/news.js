@@ -73,7 +73,13 @@ function initMap(location){
                         $('#map').prepend('<div id="country"></div>');
                     }
 
-                    $('#country').text(country.name);
+                    if(country.region === undefined){
+                        $('#country').text(country.name);
+                    }
+                    else{
+                        $('#country').text(country.region + ", " +  country.name);
+                    }
+                    console.log(country.name);
                 }
             });
         },
@@ -139,7 +145,7 @@ function initMap(location){
 
 // get country for a position on the map
 function get_country(event, func){
-    var country = {};
+    var selection = {};
     var point = map.getLonLatFromViewPortPx(event.xy).transform(
         new OpenLayers.Projection("EPSG:900913"),
         new OpenLayers.Projection("EPSG:4326")
@@ -153,23 +159,27 @@ function get_country(event, func){
                 var ac = data.results[0].address_components;
                 for (var i = 0; i < ac.length; i++){
                     if (ac[i].types[0] === 'country'){
-                        country = {
-                            'id': ac[i].short_name,
-                            'name': ac[i].long_name
-                        }
-
-                        break;
+                        // selection = {
+                        //     'id': ac[i].short_name,
+                        //     'name': ac[i].long_name
+                        // }
+                        selection['id'] = ac[i].short_name;
+                        selection['name'] = ac[i].long_name
+                        //break;
+                    }
+                    else if (ac[i].types[0] === 'administrative_area_level_1'){
+                        selection['region'] = ac[i].short_name;
                     }
                 }
 
-                func(country);
+                func(selection);
             }
         }
     });
 }
 
 function submitFeedSugestion(){
-    var url = SERVER_URL + 'suggest/' + $('#country').val() + '/?url=' + encodeURIComponent($('input[name="url"]').val());
+    var url = SERVER_URL + 'suggest/' + $('#suggest-country').val() + '/?url=' + encodeURIComponent($('input[name="url"]').val());
 
     var jqxhr = $.get(url, function(result){
         $('#suggest-feed-response').html(result);

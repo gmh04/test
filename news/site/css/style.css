@@ -75,7 +75,7 @@ a:active {
     margin-right: 0.3em;
 }
 
-#feed-article{
+.feed-article{
     border: #2d5d93 solid 1px;
     -moz-border-radius: 5px;
     border-radius: 5px;
