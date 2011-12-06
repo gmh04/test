@@ -32,11 +32,40 @@ a:active {
 
 }
 
-#map{
+#main{
     height: 100%;
     width: 70%;
     float: right;
     border: #2d5d93 solid 1px;
+}
+
+/* #map-header{ */
+/*     border-bottom: #2d5d93 solid 1px; */
+/*     /\* width: 70%; *\/ */
+/*     /\* float: right; *\/ */
+/*     padding: 0.5em; */
+/*     padding: 0.5em; */
+/*     /\* margin-left: 0.5em; *\/ */
+/*     /\* height: 10%; *\/ */
+/* } */
+
+#map{ 
+    height: 100%;
+}
+
+#region-option{
+    position: absolute;
+    z-index: 1000;
+    top: 6em;
+    /* border: red solid 1px; */
+    /* color: white; */
+    /* background-color: #00008b; */
+    /* font-weight: 900; */
+
+    /* padding: 1em; */
+    /* -moz-border-top-right-radius: 5px; */
+    /* border--top-rightradius: 5px; */
+
 }
 
 #feed-wrapper{

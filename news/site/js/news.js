@@ -24,19 +24,17 @@ $(function() {
     $("#feed-wrapper").resizable({
         stop: function(event, ui) {
             var width = ($("html").width() - ui.size.width) - 40;
-            $('#map').css('width', width);
+            $('#main').css('width', width);
         }
     });
 
     $('#feed-article-title-close').live('click', function(event) {
-        console.log('->');
-        // console.log(event);
-        // console.log(this);
-        console.log($(this).parent().parent().attr('id'));
         var id = $(this).parent().parent().attr('id');
         $('#' + id).slideUp('slow');
+    });
 
-        //$('#book').slideUp('
+    $('#region-option').live('click', function(event) {
+        console.log('->');
     });
 });
 
@@ -134,6 +132,8 @@ function initMap(location){
     var click = new OpenLayers.Control.Click();
     map.addControl(click);
     click.activate();
+
+    //map.addControl(new OpenLayers.Control.LayerSwitcher());
 
     map.addControl(new OpenLayers.Control.PanZoomBar());
 
