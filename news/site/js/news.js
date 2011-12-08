@@ -1,7 +1,5 @@
 var map;
 
-
-//SERVER_URL='http://localhost/srv/feed/'
 SERVER_URL='/srv/feed/'
 
 $(function() {
@@ -17,131 +15,34 @@ $(function() {
         loc = location;
     });
 
+   
+
+    console.log($(window).height(), $(document).height());
+    //$('#map').css('height', $(window).height());
+    var offset = 40;
+    $('#main').css('height', $(window).height() - ($('#header').height() + $('#footer').height() + offset));
+    var h = $(window).height() - ($('#header').height() + $('#footer').height() + offset);
+    $('#feed').css('max-height', h + 'px');
+    $('#map').css('height', '100%');
+    //$('#map').css('width', '100%');
+  
     // create map
     initMap(loc);
 
-    // make panes resizeable
-    $("#feed-wrapper").resizable({
-        stop: function(event, ui) {
-            var width = ($("html").width() - ui.size.width) - 40;
-            $('#main').css('width', width);
-        }
-    });
-
-    $('#feed-article-title-close').live('click', function(event) {
-        var id = $(this).parent().parent().attr('id');
+    $('.xxx').live('click', function(event){
+        console.log( $(this).parent().attr('id'));
+        var id = $(this).parent().attr('id');
         $('#' + id).slideUp('slow');
     });
+    // $('#feed-article-title-close').live('click', function(event) {
+    //     var id = $(this).parent().parent().attr('id');
+    //     $('#' + id).slideUp('slow');
+    // });
 
-    $('#region-option').live('click', function(event) {
-        console.log('->');
-    });
+    // $('#region-option').live('click', function(event) {
+    //     console.log('->');
+    // });
 });
-
-function initMap(location){
-    map = new OpenLayers.Map("map");
-    map.addLayer(new OpenLayers.Layer.OSM());
-
-    OpenLayers.Control.Hover = OpenLayers.Class(OpenLayers.Control, {
-        defaultHandlerOptions: {
-            'delay': 500,
-            'pixelTolerance': null,
-            'stopMove': false
-        },
-
-        initialize: function(options) {
-            this.handlerOptions = OpenLayers.Util.extend(
-                {}, this.defaultHandlerOptions
-            );
-            OpenLayers.Control.prototype.initialize.apply(
-                this, arguments
-            );
-            this.handler = new OpenLayers.Handler.Hover(
-                this,
-                {'pause': this.onPause, 'move': this.onMove},
-                this.handlerOptions
-            );
-        },
-
-        onPause: function(e) {
-
-            get_country(e, function(country){
-                if(country){
-                    if (!$('#country').length){
-                        $('#map').prepend('<div id="country"></div>');
-                    }
-
-                    if(country.region === undefined){
-                        $('#country').text(country.name);
-                    }
-                    else{
-                        $('#country').text(country.region + ", " +  country.name);
-                    }
-                    console.log(country.name);
-                }
-            });
-        },
-
-        onMove: function(evt) {
-            // if this control sent an Ajax request (e.g. GetFeatureInfo) when
-            // the mouse pauses the onMove callback could be used to abort that
-            // request.
-        }
-    });
-
-    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
-        defaultHandlerOptions: {
-            'single': true,
-            'double': false,
-            'pixelTolerance': 0,
-            'stopSingle': false,
-            'stopDouble': false
-        },
-
-        initialize: function(options) {
-            this.handlerOptions = OpenLayers.Util.extend(
-                {}, this.defaultHandlerOptions
-            );
-            OpenLayers.Control.prototype.initialize.apply(
-                this, arguments
-            );
-            this.handler = new OpenLayers.Handler.Click(
-                this, {
-                    'click': this.trigger
-                }, this.handlerOptions
-            );
-        },
-
-        trigger: function(e) {
-            get_country(e, function(country){
-                if(country){
-                    url = SERVER_URL + country.id;
-                    var jqxhr = $.get(url, function(sources) {
-                        //$('#feed-content').hide().html(sources).slideDown('slow');
-                        $('#feed-content').html(sources);
-                        $("#suggest-feed-form").submit(submitFeedSugestion);
-                    });
-                }
-            });
-        }
-    });
-
-    var hover = new OpenLayers.Control.Hover();
-    map.addControl(hover);
-    hover.activate();
-    var click = new OpenLayers.Control.Click();
-    map.addControl(click);
-    click.activate();
-
-    //map.addControl(new OpenLayers.Control.LayerSwitcher());
-
-    map.addControl(new OpenLayers.Control.PanZoomBar());
-
-    map.setCenter(new OpenLayers.LonLat(loc.longitude, loc.latitude).transform(
-        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-        new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
-    ), 5);
-}
 
 // get country for a position on the map
 function get_country(event, func){
@@ -178,13 +79,120 @@ function get_country(event, func){
     });
 }
 
-function submitFeedSugestion(){
-    var url = SERVER_URL + 'suggest/' + $('#suggest-country').val() + '/?url=' + encodeURIComponent($('input[name="url"]').val());
+function closeArticle(s){
+    console.log(s);
+}
 
-    var jqxhr = $.get(url, function(result){
-        $('#suggest-feed-response').html(result);
+function initMap(location){
+    map = new OpenLayers.Map("map");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    OpenLayers.Control.Hover = OpenLayers.Class(OpenLayers.Control, {
+        defaultHandlerOptions: {
+            'delay': 500,
+            'pixelTolerance': null,
+            'stopMove': false
+        },
+
+        initialize: function(options) {
+            this.handlerOptions = OpenLayers.Util.extend(
+                {}, this.defaultHandlerOptions
+            );
+            OpenLayers.Control.prototype.initialize.apply(
+                this, arguments
+            );
+            this.handler = new OpenLayers.Handler.Hover(
+                this,
+                {'pause': this.onPause, 'move': this.onMove},
+                this.handlerOptions
+            );
+        },
+
+        onPause: function(e) {
+
+            get_country(e, function(country){
+                if(country){
+                    if(country.region === undefined){
+                        //$('#header').html('<h1>' + country.name + '</h1>');
+                        var text = country.name;
+                    }
+                    else{
+                        //$('#header').html('<h1>' + country.region + ", " +  country.name + '</h1>');
+                        //$('#header h1').text(country.region + ", " +  country.name);
+                        var text = country.region + ", " +  country.name;
+                    }
+
+                    $('#header h1').text(text);
+                }
+            });
+        },
+
+        onMove: function(evt) {
+            // if this control sent an Ajax request (e.g. GetFeatureInfo) when
+            // the mouse pauses the onMove callback could be used to abort that
+            // request.
+        }
     });
 
+    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+        defaultHandlerOptions: {
+            'single': true,
+            'double': false,
+            'pixelTolerance': 0,
+            'stopSingle': false,
+            'stopDouble': false
+        },
 
-    return false;
+        initialize: function(options) {
+            this.handlerOptions = OpenLayers.Util.extend(
+                {}, this.defaultHandlerOptions
+            );
+            OpenLayers.Control.prototype.initialize.apply(
+                this, arguments
+            );
+            this.handler = new OpenLayers.Handler.Click(
+                this, {
+                    'click': this.trigger
+                }, this.handlerOptions
+            );
+        },
+
+        trigger: function(e) {
+            $.mobile.showPageLoadingMsg()
+            get_country(e, function(country){
+                if(country){
+                    url = SERVER_URL + country.id;
+                    var jqxhr = $.get(url, function(sources) {
+                        //$('#feed-content').hide().html(sources).slideDown('slow');
+                        //$('#feed-content').html(sources);
+                        $('#feed-content').html(sources);
+                        $("#feed-content ul").listview();
+                        $("#suggest-feed-form").submit(submitFeedSugestion);
+                      
+
+                    });
+                }
+            });
+
+            $.mobile.hidePageLoadingMsg()
+        }
+    });
+
+    var hover = new OpenLayers.Control.Hover();
+    map.addControl(hover);
+    hover.activate();
+    var click = new OpenLayers.Control.Click();
+    map.addControl(click);
+    click.activate();
+
+    //map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+    map.addControl(new OpenLayers.Control.PanZoomBar());
+
+    map.setCenter(new OpenLayers.LonLat(loc.longitude, loc.latitude).transform(
+        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+        new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+    ), 5);
+
+    console.log(map);
 }

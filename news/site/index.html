@@ -1,47 +1,51 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-          "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html> 
 
-<html>
-
-  <head>
+<html> 
+  <head> 
+    <title>Page Title</title> 
+	
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-    <title>World of News</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="css/jquery.mobile.css" />
+    <link rel="stylesheet" href="css/style.css" />
 
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.mobile.js"></script>
+    <script type="text/javascript" src="js/OpenLayers/OpenLayers.js"></script>
+    <script type="text/javascript" src="js/news.js"></script>
+    <script type="text/javascript" src="js/jquery.geolocation.js"></script>
 
-    <script src="js/OpenLayers/OpenLayers.js" type="text/javascript"></script>
-    <script src="js/jquery.js" type="text/javascript"></script>
-    <script src="js/jquery-ui.js" type="text/javascript"></script>
-    <script src="js/jquery.geolocation.js" type="text/javascript"></script>
-
-    <script src="js/news.js" type="text/javascript"></script>
-  </head>
-
+  </head> 
+  
   <body>
     <noscript><p>JavaScript must be enabled to use this page</p></noscript>
 
-    <div id="feed-wrapper">
-      <div id="feed">
-        <div id="feed-content">
-          <p>Click on a country in the map to fetch news</p>
-        </div>
+    <div id="header" data-role="header" >
+      <h1>World of News</h1>
+    </div> 
+    
+    <div id="feed" data-role="content" >
+      <div id="feed-content" >
+        <p>Click on a country on the map to fetch news</p>
       </div>
     </div>
 
-    <div id="main">
-      <div id="region-option" title="Choose Region" class="clickable">
-        <img src="js/OpenLayers/img/east-mini.png"></img>
-      </div>
+    <div id="main" data-role="content">
       <div id="map" >
       </div>
+    </div>
+
+    <div id="footer" data-role="footer">
+      
     </div>
 
     <div>
       <a href="http://validator.w3.org/check?uri=referer">html</a>
       <a href="http://jigsaw.w3.org/css-validator/check/referer">css</a>
     </div>
+ 
   </body>
 
 </html>
