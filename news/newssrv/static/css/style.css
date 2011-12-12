@@ -24,6 +24,13 @@ html,body {
     float: right;
     /* border: solid red 1px; */
 }
+/* #login-dialog{ */
+/*     display:none; */
+/* } */
+
+.hidden {
+    display:none; 
+}
 
 #map{ 
     height: 100%;
@@ -53,3 +60,31 @@ div.olControlPanZoomBar{
     position: relative !important;
     float: right;
 }
+
+
+
+
+#mask {
+    position:absolute;
+    z-index:9000;
+    background-color:#000;
+    display:none;
+    color: white;
+}   
+#boxes .window {
+    position:absolute;
+    width:440px;
+    height:200px;
+    display:none;
+    z-index:9999;
+    padding:20px;
+}
+#boxes #dialog {
+    position:absolute;
+    top: 100px;
+    width:375px;
+    height:203px;
+    border: white solid 2px;
+    /* margin: auto; */
+}
+

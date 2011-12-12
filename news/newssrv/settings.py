@@ -36,7 +36,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'news.db',
+            'NAME': os.sep.join((PROJECT_ROOT, 'news.db')),
             'USER': '',
             'PASSWORD': '',
             'HOST': '',
@@ -110,22 +110,40 @@ TEMPLATE_DIRS = (
     # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.sep.join((PROJECT_ROOT, 'templates')),
     os.sep.join((PROJECT_ROOT, 'feeds', 'templates'))
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
 )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.messages',
+    'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'registration',
     'django_countries',
     'newssrv.feeds',
 )
+
+STATICFILES_DIRS = (
+     os.sep.join((PROJECT_ROOT, 'static')),
+)
+STATIC_ROOT = PROJECT_ROOT
+STATIC_URL = '/static'
 
 # smtp settings
 EMAIL_HOST = 'smtp.gmail.com'
@@ -133,3 +151,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ghamilt2@gmail.com'
 EMAIL_HOST_PASSWORD = config.get('smtp', 'SMTP_PASSWORD')
 EMAIL_USE_TLS = True
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+LOGIN_REDIRECT_URL = 'http://localhost:1314'

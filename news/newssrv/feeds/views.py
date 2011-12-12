@@ -13,6 +13,25 @@ from xml.dom.minidom import parse, parseString
 
 from newssrv.feeds.models import Source, Article
 
+def fetch_all_countries(request):
+    print '->'
+    countries = []
+    sources = Source.objects.values('id', 'country').distinct()
+
+    for source in sources:
+        #print 
+        countries.append(Country(code=source['country']))
+
+    return render_to_response('edit_countries.html', {'countries': countries})
+
+def fetch_sources_by_country(request, country_id):
+    sources = Source.objects.filter(country=country_id)
+    return render_to_response('edit_country.html', {'sources': sources})
+
+def edit_source(request, source_id):
+    source = Source.objects.get(id=source_id)
+    print source
+    return render_to_response('edit_source.html', {'source': source})
 
 def fetch_feeds_by_source(request, id):
     sdict = {}

@@ -1,0 +1,5 @@
+cd ~/geo-dev/test/news/newssrv
+./manage.py newssavesources
+./manage.py sqlclear feeds | ./manage.py dbshell
+./manage.py syncdb
+./manage.py newsfetchfeeds

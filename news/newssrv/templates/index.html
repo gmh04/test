@@ -10,14 +10,14 @@
     <meta name="description" content="Map based world news aggregator" /> 
     <meta name="keywords" content="news curent affairs map osm media" /> 
 
-    <link rel="stylesheet" href="css/jquery.mobile.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}/css/jquery.mobile.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}/css/style.css" />
 
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.mobile.js"></script>
-    <script type="text/javascript" src="js/OpenLayers/OpenLayers.js"></script>
-    <script type="text/javascript" src="js/news.js"></script>
-    <script type="text/javascript" src="js/jquery.geolocation.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.mobile.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/OpenLayers/OpenLayers.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/news.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.geolocation.js"></script>
 
     <script type="text/javascript">
       
@@ -27,7 +27,7 @@
       
       (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http:///www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
       
@@ -54,7 +54,11 @@
     </div>
 
     <div id="footer" data-role="footer" class="ui-bar">
-      
+      {% if user.is_authenticated %}
+      <a id="edit-btn" data-role="button" data-icon="arrow-r">Edit</a>
+      {% else %}
+      <a href="/srv/admin/login" data-role="button" data-icon="arrow-r">Login</a>
+      {% endif %}
     </div>
 
     <div>

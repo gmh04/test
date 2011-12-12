@@ -1,0 +1,10 @@
+<h3>{{ source.name }}</h3>
+<form action="/save" method="post">{% csrf_token %}
+  <label for="url">URL:</label>
+  <input id="url" type="text" value="{{ source.feed_url }}"></input>
+
+  <label for="icon">Icon:</label>
+  <input id="icon" type="file"></input>
+
+  <input type="button" value="Save"></input>
+</form>

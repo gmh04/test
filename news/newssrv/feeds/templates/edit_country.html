@@ -1,0 +1,5 @@
+<ul>
+{% for source in sources %}
+<a href="/feed/edit/{{ source.country }}/{{ source.id }}">{{ source.name }}</a>
+{% endfor %}
+</ul>

@@ -30,10 +30,77 @@ $(function() {
         $('#' + id).slideUp('slow');
     });
 
-    url = SERVER_URL + '/menu';
-    $.get(url, function(menu) {
-        $('#footer').append(menu).page();
+    // url = SERVER_URL + '/menu';
+    // $.get(url, function(menu) {
+    //     $('#footer').append(menu).page();
+    // });
+
+    $('#loginx-btn').live('click', function(event){
+        console.log('-<');
+
+        // $("#login-dialog").dialog({
+	//     height: 140,
+	//     modal: true,
+        //     position: 'center'
+	// });
+        // $("#login-dialog").show();
+        
+
     });
+    
+    // $('#logout-btn').live('click', function(e){
+    //     window.location.replace("logout");
+    // });
+
+    // $('a[name=modal]').click(function(e) {
+    $('#login-btn').live('click', function(e){
+        //Cancel the link behavior
+        e.preventDefault();
+        //Get the A tag
+        //var id = $(this).attr('href');
+     
+        //Get the screen height and width
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+     
+        //Set height and width to mask to fill up the whole screen
+        $('#mask').css({'width':maskWidth,'height':maskHeight});
+         
+        //transition effect    
+        $('#mask').fadeIn(1000); 
+        $('#mask').fadeTo("slow", 0.8); 
+     
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+               
+        //Set the popup window to center
+        //$(id).css('top',  winH/2-$(id).height()/2);
+        //$(id).css('left', winW/2-$(id).width()/2);
+        //console.log(winH/2-$(id).height()/2);
+        $('#dialog').css('top',  winH/2-$('#dialog').height()/2);
+        $('#dialog').css('left', winW/2-$('#dialog').width()/2);
+     
+        $("#dialog").show();
+
+        //transition effect
+        $("#dialog").fadeIn(1000);
+        $('#username').focus();
+        
+    });
+     
+    //if close button is clicked
+    $('.window .close').click(function (e) {
+        //Cancel the link behavior
+        e.preventDefault();
+        $('#mask, .window').hide();
+    });    
+     
+    //if mask is clicked
+    $('#mask').click(function () {
+        $(this).hide();
+        $('.window').hide();
+    });         
 });
 
 // get country for a position on the map
@@ -44,7 +111,7 @@ function get_country(event, func){
         new OpenLayers.Projection("EPSG:4326")
     );
 
-    url='/geoencode/json?latlng=' + point.lat + ',' +  point.lon + '&sensor=false';
+    url='http://localhost/geoencode/json?latlng=' + point.lat + ',' +  point.lon + '&sensor=false';
     var jqxhr = $.get(url, function(data) {
         if (data.status === 'OK'){
             if (data.results.length > 0){
@@ -153,7 +220,7 @@ function initMap(location){
             $.mobile.showPageLoadingMsg()
             get_country(e, function(country){
                 if(country){
-                    url = SERVER_URL + '/feed/' + country.id;
+                    url = '/feed/' + country.id;
                     var jqxhr = $.get(url, function(sources) {
                         //$('#feed-content').hide().html(sources).slideDown('slow');
                         //$('#feed-content').html(sources);

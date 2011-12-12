@@ -4,10 +4,10 @@
   {% for article in articles %}
   <li id="feed-article-{{ article.id }}" title="{{ article.description|truncatewords:20}}">
     <a href="{{ article.url }}">
-      <img class="uxi-li-icon" src="http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/128x128/actions/add-to-desktop.png"/>
+      <img class="ui-li-icon" src="http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/128x128/actions/add-to-desktop.png"/>
       <h3>{{ article.title }}</h3>
       <p>{{ article.date }}</p>
-      <a href="#" class="xxx" data-rel="dialog" data-transition="slideup">Remove</a>
+      <a href="#" class="article-remove" data-rel="dialog" data-transition="slideup">Remove</a>
     </a>
   </li>
     <!-- <div id="feed-article-{{ article.id }}" class="feed-article"> -->

@@ -1,0 +1,109 @@
+<!DOCTYPE html> 
+
+<html> 
+  <head> 
+    <title>{% block title %}World of News{% endblock %}</title> 	
+
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="Map based world news aggregator" /> 
+    <meta name="keywords" content="news curent affairs map osm media" /> 
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}/css/jquery.mobile.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}/css/style.css" />
+
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.mobile.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/OpenLayers/OpenLayers.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/news.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.geolocation.js"></script>
+
+    <script type="text/javascript">
+      
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-27620755-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http:///www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+      
+    </script>
+
+  </head> 
+  
+  <body>
+    <noscript><p>JavaScript must be enabled to use this page</p></noscript>
+
+    <div id="header" data-role="header" >
+      {% block header %}
+      <h1>World of News</h1>
+      {% endblock %}
+    </div> 
+    
+    <div id="feed" data-role="content" >
+      {% block feed %}
+      <div id="feed-content" >
+        <p>Click on a country on the map to fetch news</p>
+      </div>
+      {% endblock %}
+    </div>
+
+    <div id="main" data-role="content">
+      {% block content %}
+      <div id="map" >
+      </div>
+      {% endblock %}
+    </div>
+
+    <!-- <div id="login-dialog" class="hidden" title="Basic dialog"> -->
+    <!--   <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p> -->
+    <!-- </div> -->
+
+    <!-- #dialog is the id of a DIV defined in the code below -->
+    <!-- <a href="#dialog" name="modal">Simple Modal Window</a> -->
+ 
+    <div id="boxes">
+      <div id="dialog" class="window">
+        <form  data-ajax="false" method="post" action="/login">{% csrf_token %}
+          <label for="username">User Name:</label>
+          <input id="username" name="username" type="text"></input>
+
+          <label for="pasword">Password:</label>
+          <input id="password" name="password" type="password"></input>
+
+          <input type="submit" value="Log in"></input>
+
+          <!-- close button is defined as close class -->
+          <a href="#" class="close">Close</a>
+        </form>
+      </div>  
+      <div id="mask"></div>
+    </div>
+    
+    <div id="footer" data-role="footer" class="ui-bar">
+      {% block footer %}
+      {% if user.is_authenticated %}
+      <a id="edit-btn" data-role="button" data-icon="arrow-r">Edit</a>
+      <a data-ajax="false" href="/logout" id="logout-btn" data-role="button" data-icon="arrow-r">Logout</a>
+      {% else %}
+      <a id="login-btn" data-role="button" data-icon="arrow-r">Login</a>
+      <!-- <a href="/admin/login" data-role="button" data-icon="arrow-r">Login</a> -->
+      <!-- <a data-ajax="false" href="/admin">Login</a> -->
+      <!-- <a data-ajax="false" href="/admin/?next={{ request.path }}">Login</a> -->
+
+      {% endif %}
+      {% endblock %}
+    </div>
+
+    <div>
+      <a href="http://validator.w3.org/check?uri=referer">html</a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">css</a>
+    </div>
+ 
+  </body>
+
+</html>

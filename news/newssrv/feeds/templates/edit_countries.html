@@ -1,0 +1,5 @@
+<ul>
+{% for country in countries %}
+<a href="/feed/edit/{{ country.code }}">{{ country.name }}</a>
+{% endfor %}
+</ul>
