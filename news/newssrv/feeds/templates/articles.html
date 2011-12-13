@@ -10,25 +10,6 @@
       <a href="#" class="article-remove" data-rel="dialog" data-transition="slideup">Remove</a>
     </a>
   </li>
-    <!-- <div id="feed-article-{{ article.id }}" class="feed-article"> -->
-    <!--     <div id="feed-article-title"> -->
-    <!--       <div id="feed-article-title-link"> -->
-    <!--         <a href="{{ article.url }}">{{ article.title }}</a> -->
-    <!--       </div> -->
-    <!--       <div id="feed-article-title-close" title="Remove Article" class="clickable"> -->
-    <!--         <img src="images/close.png"/> -->
-    <!--       </div> -->
-    <!--     </div> -->
-    <!--     <div id="feed-source"> -->
-    <!--       <a href="{{ article.source.site_url }}">{{ article.source.name }}</a> -->
-    <!--     </div> -->
-    <!--     <div id="feed-article-description"> -->
-    <!--       <p>{{ article.description|truncatewords:20}} <a href="">more</a></p> -->
-    <!--     </div> -->
-
-    <!--     <div id="feed-article-date">{{ article.date }}</div> -->
-    <!-- </div> -->
-  <!-- </li> -->
   {% endfor %}
 </ul>
 {% include "suggest.html" with country_id="{{ country.code }}" %}

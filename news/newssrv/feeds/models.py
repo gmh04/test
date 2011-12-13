@@ -7,7 +7,8 @@ class Source(models.Model):
     name = models.CharField(max_length=64)
     feed_url = models.CharField(max_length=128, unique=True)
     site_url = models.CharField(max_length=128)
-    icon = models.CharField(max_length=32)
+    #icon = models.CharField(max_length=32)
+    icon = models.ImageField(upload_to='icons', null=True)
     last_updated = models.DateTimeField(null=True)
     language = models.CharField(max_length=5)
 

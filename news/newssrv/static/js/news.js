@@ -37,21 +37,8 @@ $(function() {
 
     $('#loginx-btn').live('click', function(event){
         console.log('-<');
-
-        // $("#login-dialog").dialog({
-	//     height: 140,
-	//     modal: true,
-        //     position: 'center'
-	// });
-        // $("#login-dialog").show();
-        
-
     });
     
-    // $('#logout-btn').live('click', function(e){
-    //     window.location.replace("logout");
-    // });
-
     // $('a[name=modal]').click(function(e) {
     $('#login-btn').live('click', function(e){
         //Cancel the link behavior
@@ -100,7 +87,17 @@ $(function() {
     $('#mask').click(function () {
         $(this).hide();
         $('.window').hide();
-    });         
+    });
+
+    $('.news-visibility').click(function () {
+        $('#edit-btn').toggle(); 
+        $('#view-btn').toggle();  
+    });
+
+    $('#view-btn').hide(); 
+
+    //$.mobile.ajaxEnabled = false;
+    $.mobile.ajaxFormsEnabled = false;
 });
 
 // get country for a position on the map
@@ -111,7 +108,7 @@ function get_country(event, func){
         new OpenLayers.Projection("EPSG:4326")
     );
 
-    url='http://localhost/geoencode/json?latlng=' + point.lat + ',' +  point.lon + '&sensor=false';
+    url='/geoencode/json?latlng=' + point.lat + ',' +  point.lon + '&sensor=false';
     var jqxhr = $.get(url, function(data) {
         if (data.status === 'OK'){
             if (data.results.length > 0){
@@ -138,8 +135,40 @@ function get_country(event, func){
     });
 }
 
-function closeArticle(s){
+function closeArticle(country, source_id){
     console.log(s);
+    console.log(s);
+}
+
+function editSource(country, source){
+    console.log(country);
+
+    url = '/feed/edit/' + country + '/' + source;
+    $.get(url, function(sources) {
+        $('#feed-content').css('overflow-y','hidden');
+        $('#feed-content').html(sources);
+        $('#feed-content').trigger("create");
+    
+        // $('#save-source').submit(function(response){
+        //     $('#save-source-info').text(''); 
+        //     $.ajax({
+        //         type: "POST",
+        //         url: $('#save-source').attr('action'),
+        //         data: $('#save-source').serialize(),
+        //         // cache: false,
+        //         // contentType: false,
+        //         // processData: false,
+        //         error: function(xhr, status, error) {
+        //             $('#save-source-info').text('There was a problem.'); 
+        //         },
+        //         success: function(response) {
+        //             $('#save-source-info').text('Source saved.'); 
+        //         }
+        //     });
+
+        //     return false;
+        // });
+    });
 }
 
 function initMap(location){
@@ -220,15 +249,19 @@ function initMap(location){
             $.mobile.showPageLoadingMsg()
             get_country(e, function(country){
                 if(country){
-                    url = '/feed/' + country.id;
-                    var jqxhr = $.get(url, function(sources) {
-                        //$('#feed-content').hide().html(sources).slideDown('slow');
-                        //$('#feed-content').html(sources);
+                    console.log($('#view-btn').is(":visible"));
+                    if($('#view-btn').is(":visible")){
+                        url = '/feed/edit/' + country.id;
+                    }
+                    else{
+                        url = '/feed/' + country.id;
+                    }
+
+                    //url = '/feed/' + country.id;
+                    $.get(url, function(sources) {
                         $('#feed-content').html(sources);
                         $("#feed-content ul").listview();
                         $("#suggest-feed-form").submit(submitFeedSugestion);
-                      
-
                     });
                 }
             });
@@ -252,6 +285,4 @@ function initMap(location){
         new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
         new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
     ), 5);
-
-    console.log(map);
 }

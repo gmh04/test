@@ -12,8 +12,6 @@ def main(request):
                               context_instance=RequestContext(request))
 
 def login_user(request):
-    print '*'
-    print request.POST
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)

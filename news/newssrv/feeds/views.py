@@ -3,7 +3,8 @@ from django.core.mail import mail_admins
 from django.core.validators import URLValidator
 from django_countries.fields import Country
 from django.http import HttpResponse, HttpResponseNotAllowed
-from django.shortcuts import render_to_response
+from django.shortcuts import redirect, render_to_response
+from django.template import RequestContext
 
 import json
 import urllib2
@@ -14,24 +15,58 @@ from xml.dom.minidom import parse, parseString
 from newssrv.feeds.models import Source, Article
 
 def fetch_all_countries(request):
-    print '->'
     countries = []
     sources = Source.objects.values('id', 'country').distinct()
 
     for source in sources:
-        #print 
         countries.append(Country(code=source['country']))
 
     return render_to_response('edit_countries.html', {'countries': countries})
 
 def fetch_sources_by_country(request, country_id):
+    country = Country(code=country_id)
     sources = Source.objects.filter(country=country_id)
-    return render_to_response('edit_country.html', {'sources': sources})
+    return render_to_response('edit_country.html', 
+                              {'country': country,
+                               'sources': sources})
 
 def edit_source(request, source_id):
     source = Source.objects.get(id=source_id)
-    print source
-    return render_to_response('edit_source.html', {'source': source})
+
+    icon = None
+    # file_name = '%s-%s' % (source.id, source.icon)
+    # if(os.path.exists(os.sep.join((settings.PROJECT_PATH, 'static', 'icons', file_name)))):
+    #     icon = '/static/icons/%s' % file_name
+
+    from newssrv.feeds.forms import EditSource
+
+    print request.POST
+    print request.FILES
+    if request.method == 'POST':
+        form = EditSource(request.POST, request.FILES)
+        if form.is_valid():
+            #form = form.save()
+            #print form.feed_url
+            #print form
+            form.feed_url = form.cleaned_data['feed_url']
+            return redirect('/?source=%d' % source.id)
+        else:
+            print form.errors
+    else:
+        # form = EditSource(instance=source)        
+        form = EditSource(initial={'feed_url': source.feed_url})
+
+    return render_to_response('edit_source.html',
+                              {'source': source,
+                               'form': form},
+                              context_instance=RequestContext(request))
+    # return render_to_response('edit_source.html',
+    #                           {'source': source,
+    #                            'form': form})
+
+    # return render_to_response('edit_source.html',
+    #                           {'source': source,
+    #                            'icon': icon})
 
 def fetch_feeds_by_source(request, id):
     sdict = {}

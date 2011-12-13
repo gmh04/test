@@ -1,10 +1,31 @@
 <h3>{{ source.name }}</h3>
-<form action="/save" method="post">{% csrf_token %}
-  <label for="url">URL:</label>
-  <input id="url" type="text" value="{{ source.feed_url }}"></input>
 
-  <label for="icon">Icon:</label>
-  <input id="icon" type="file"></input>
+<form id="save-source" enctype="multipart/form-data" method="post" action="/feed/edit/{{ source.country }}/{{ source.id }}" data-ajax="false" >{% csrf_token %}
 
-  <input type="button" value="Save"></input>
+  <!-- {{ form.as_p }} -->
+
+  <!-- <div data-role="fieldcontain"> -->
+  <!--   <label for="feed_url">Feed URL:</label> -->
+  <!--   <input id="feed_url" type="text" value="{{ source.feed_url }}" /> -->
+  <!-- </div> -->
+
+  <!-- <div data-role="fieldcontain"> -->
+
+  <!--   {% if source.icon %} -->
+  <!--   <label for="feed_url">Upload:</label> -->
+  <!--   <input id="feed_url" type="file" maxlength="128" name="feed_url"/> -->
+  <!--   {% else %} -->
+  <!--   <label for="source-icon">Change:</label> -->
+  <!--   <input id="source-icon" type="file" /> -->
+  <!--   {% endif %} -->
+  <!-- </div> -->
+  <!-- <div id="save-source-info"></div> -->
+
+  {% if source.icon %}
+  <img src="/static/{{ source.icon }}" />
+  {% endif %}
+
+  {{ form.as_p }}
+
+  <input type="submit" value="Submit" />
 </form>

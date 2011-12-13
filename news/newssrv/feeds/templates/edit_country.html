@@ -1,5 +1,6 @@
-<ul>
+<h3>Sources from {{ country.name }}</h3>
+<ul data-role="listview" data-theme="c">
 {% for source in sources %}
-<a href="/feed/edit/{{ source.country }}/{{ source.id }}">{{ source.name }}</a>
+<li><a onclick="editSource('{{ source.country }}', {{ source.id }} )">{{ source.name }}</a></li>
 {% endfor %}
 </ul>

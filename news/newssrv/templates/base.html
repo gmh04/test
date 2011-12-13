@@ -18,6 +18,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}/js/OpenLayers/OpenLayers.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}/js/news.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.geolocation.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/js/fileuploader.js"></script>
 
     <script type="text/javascript">
       
@@ -46,7 +47,7 @@
     
     <div id="feed" data-role="content" >
       {% block feed %}
-      <div id="feed-content" >
+      <div id="feed-content" data-role="content">
         <p>Click on a country on the map to fetch news</p>
       </div>
       {% endblock %}
@@ -87,14 +88,11 @@
     <div id="footer" data-role="footer" class="ui-bar">
       {% block footer %}
       {% if user.is_authenticated %}
-      <a id="edit-btn" data-role="button" data-icon="arrow-r">Edit</a>
+      <a id="edit-btn" class="news-visibility" data-role="button" data-icon="arrow-r">Edit</a>
+      <a id="view-btn" class="news-visibility" data-role="button" data-icon="arrow-r">View</a>
       <a data-ajax="false" href="/logout" id="logout-btn" data-role="button" data-icon="arrow-r">Logout</a>
       {% else %}
       <a id="login-btn" data-role="button" data-icon="arrow-r">Login</a>
-      <!-- <a href="/admin/login" data-role="button" data-icon="arrow-r">Login</a> -->
-      <!-- <a data-ajax="false" href="/admin">Login</a> -->
-      <!-- <a data-ajax="false" href="/admin/?next={{ request.path }}">Login</a> -->
-
       {% endif %}
       {% endblock %}
     </div>
