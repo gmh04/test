@@ -142,7 +142,7 @@ INSTALLED_APPS = (
 STATICFILES_DIRS = (
      os.sep.join((PROJECT_ROOT, 'static')),
 )
-STATIC_ROOT = PROJECT_ROOT
+STATIC_ROOT = os.sep.join((PROJECT_ROOT, 'static'))
 STATIC_URL = '/static'
 
 # smtp settings

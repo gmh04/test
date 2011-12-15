@@ -26,34 +26,56 @@ def fetch_all_countries(request):
 def fetch_sources_by_country(request, country_id):
     country = Country(code=country_id)
     sources = Source.objects.filter(country=country_id)
-    return render_to_response('edit_country.html', 
+    return render_to_response('edit_country.html',
                               {'country': country,
                                'sources': sources})
+
+def _handle_uploaded_file(f, name):
+
+    #new_name = '%d.%s' % (source_id, f.name.split('.')[1])
+    #print f.__class__
+    #print dir(f)
+    from newssrv import settings
+    import os
+    destination = open(
+        os.sep.join((settings.STATIC_ROOT, 'icons', name)),
+        'wb+')
+
+    print os.sep.join((settings.STATIC_ROOT, 'icons', name))
+
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
 
 def edit_source(request, source_id):
     source = Source.objects.get(id=source_id)
 
     icon = None
+
+    #new_name = '%d.%s' % (source_id,
+    #icon_name = os.sep.join((settings.STATIC_ROOT, 'icons', new_name))
     # file_name = '%s-%s' % (source.id, source.icon)
-    # if(os.path.exists(os.sep.join((settings.PROJECT_PATH, 'static', 'icons', file_name)))):
-    #     icon = '/static/icons/%s' % file_name
+    #if(os.path.exists(icon_name)):
+    #    icon = '/static/icons/%s' % file_name
 
     from newssrv.feeds.forms import EditSource
 
-    print request.POST
-    print request.FILES
     if request.method == 'POST':
         form = EditSource(request.POST, request.FILES)
         if form.is_valid():
-            #form = form.save()
-            #print form.feed_url
-            #print form
-            form.feed_url = form.cleaned_data['feed_url']
-            return redirect('/?source=%d' % source.id)
+            f = request.FILES['icon']
+            icon_name = '%s.%s' % (source_id, f.name.split('.')[1])
+
+            _handle_uploaded_file(f, icon_name)
+
+            source.feed_url = form.cleaned_data['feed_url']
+            source.icon = icon_name
+            source.save()
+            return redirect('/?country=%s&source=%d' % (source.country, source.id))
         else:
             print form.errors
     else:
-        # form = EditSource(instance=source)        
+        # form = EditSource(instance=source)
         form = EditSource(initial={'feed_url': source.feed_url})
 
     return render_to_response('edit_source.html',

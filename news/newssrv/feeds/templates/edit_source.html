@@ -1,29 +1,11 @@
 <h3>{{ source.name }}</h3>
+{% if source.icon %}
+<img src="/static/icons/{{ source.icon }}" />
+{% endif %}
+
 
 <form id="save-source" enctype="multipart/form-data" method="post" action="/feed/edit/{{ source.country }}/{{ source.id }}" data-ajax="false" >{% csrf_token %}
 
-  <!-- {{ form.as_p }} -->
-
-  <!-- <div data-role="fieldcontain"> -->
-  <!--   <label for="feed_url">Feed URL:</label> -->
-  <!--   <input id="feed_url" type="text" value="{{ source.feed_url }}" /> -->
-  <!-- </div> -->
-
-  <!-- <div data-role="fieldcontain"> -->
-
-  <!--   {% if source.icon %} -->
-  <!--   <label for="feed_url">Upload:</label> -->
-  <!--   <input id="feed_url" type="file" maxlength="128" name="feed_url"/> -->
-  <!--   {% else %} -->
-  <!--   <label for="source-icon">Change:</label> -->
-  <!--   <input id="source-icon" type="file" /> -->
-  <!--   {% endif %} -->
-  <!-- </div> -->
-  <!-- <div id="save-source-info"></div> -->
-
-  {% if source.icon %}
-  <img src="/static/{{ source.icon }}" />
-  {% endif %}
 
   {{ form.as_p }}
 

@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
@@ -19,13 +20,15 @@ def login_user(request):
         if user.is_active:
             login(request, user)
             # Redirect to a success page.
-            return redirect('/')
+            response = redirect('/')
         else:
             # Return a 'disabled account' error message
-            pass
+            response = HttpResponse('user is not active')
     else:
         # Return an 'invalid login' error message.
-        pass
+        response = HttpResponse('user doesnt exist')
+
+    return response
 
 def logout_user(request):
     logout(request)

@@ -20,7 +20,7 @@ $(function() {
     var h = $(window).height() - ($('#header').height() + $('#footer').height() + offset);
     $('#feed').css('max-height', h + 'px');
     $('#map').css('height', '100%');
-    
+
     // create map
     initMap(loc);
 
@@ -35,54 +35,54 @@ $(function() {
     //     $('#footer').append(menu).page();
     // });
 
-    $('#loginx-btn').live('click', function(event){
-        console.log('-<');
-    });
-    
+    // $('#loginx-btn').live('click', function(event){
+    //     console.log('-<');
+    // });
+
     // $('a[name=modal]').click(function(e) {
     $('#login-btn').live('click', function(e){
         //Cancel the link behavior
         e.preventDefault();
         //Get the A tag
         //var id = $(this).attr('href');
-     
+
         //Get the screen height and width
         var maskHeight = $(document).height();
         var maskWidth = $(window).width();
-     
+
         //Set height and width to mask to fill up the whole screen
         $('#mask').css({'width':maskWidth,'height':maskHeight});
-         
-        //transition effect    
-        $('#mask').fadeIn(1000); 
-        $('#mask').fadeTo("slow", 0.8); 
-     
+
+        //transition effect
+        $('#mask').fadeIn(1000);
+        $('#mask').fadeTo("slow", 0.8);
+
         //Get the window height and width
         var winH = $(window).height();
         var winW = $(window).width();
-               
+
         //Set the popup window to center
         //$(id).css('top',  winH/2-$(id).height()/2);
         //$(id).css('left', winW/2-$(id).width()/2);
         //console.log(winH/2-$(id).height()/2);
         $('#dialog').css('top',  winH/2-$('#dialog').height()/2);
         $('#dialog').css('left', winW/2-$('#dialog').width()/2);
-     
+
         $("#dialog").show();
 
         //transition effect
         $("#dialog").fadeIn(1000);
         $('#username').focus();
-        
+
     });
-     
+
     //if close button is clicked
     $('.window .close').click(function (e) {
         //Cancel the link behavior
         e.preventDefault();
         $('#mask, .window').hide();
-    });    
-     
+    });
+
     //if mask is clicked
     $('#mask').click(function () {
         $(this).hide();
@@ -90,14 +90,37 @@ $(function() {
     });
 
     $('.news-visibility').click(function () {
-        $('#edit-btn').toggle(); 
-        $('#view-btn').toggle();  
+        $('#edit-btn').toggle();
+        $('#view-btn').toggle();
     });
 
-    $('#view-btn').hide(); 
+    $('#view-btn').hide();
 
     //$.mobile.ajaxEnabled = false;
-    $.mobile.ajaxFormsEnabled = false;
+    //$.mobile.ajaxFormsEnabled = false;
+
+    var e,
+    a = /\+/g,  // Regex for replacing addition symbol with a space
+    r = /([^&=]+)=?([^&]*)/g,
+    d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+    q = window.location.search.substring(1);
+
+    var country, source;
+    while (e = r.exec(q)){
+        //rams[d(e[1])] = d(e[2]);
+        //console.log(d(e[1]) + ' : '  +  d(e[2]));
+        if (d(e[1]) === 'source'){
+            source = d(e[2]);
+        }
+        else if(d(e[1]) === 'country'){
+            country = d(e[2]);
+        }
+    }
+
+    if (country !== undefined && source !== undefined){
+        console.log('=>');
+        editSource('GB', 1 );
+    }
 });
 
 // get country for a position on the map
@@ -141,33 +164,26 @@ function closeArticle(country, source_id){
 }
 
 function editSource(country, source){
-    console.log(country);
-
     url = '/feed/edit/' + country + '/' + source;
     $.get(url, function(sources) {
         $('#feed-content').css('overflow-y','hidden');
         $('#feed-content').html(sources);
         $('#feed-content').trigger("create");
-    
-        // $('#save-source').submit(function(response){
-        //     $('#save-source-info').text(''); 
-        //     $.ajax({
-        //         type: "POST",
-        //         url: $('#save-source').attr('action'),
-        //         data: $('#save-source').serialize(),
-        //         // cache: false,
-        //         // contentType: false,
-        //         // processData: false,
-        //         error: function(xhr, status, error) {
-        //             $('#save-source-info').text('There was a problem.'); 
-        //         },
-        //         success: function(response) {
-        //             $('#save-source-info').text('Source saved.'); 
-        //         }
-        //     });
+    });
+}
 
-        //     return false;
-        // });
+function fetch_feed(){
+    if($('#view-btn').is(":visible")){
+        url = '/feed/edit/' + country.id;
+    }
+    else{
+        url = '/feed/' + country.id;
+    }
+
+    $.get(url, function(sources) {
+        $('#feed-content').html(sources);
+        $("#feed-content ul").listview();
+        $("#suggest-feed-form").submit(submitFeedSugestion);
     });
 }
 
@@ -249,7 +265,7 @@ function initMap(location){
             $.mobile.showPageLoadingMsg()
             get_country(e, function(country){
                 if(country){
-                    console.log($('#view-btn').is(":visible"));
+
                     if($('#view-btn').is(":visible")){
                         url = '/feed/edit/' + country.id;
                     }
