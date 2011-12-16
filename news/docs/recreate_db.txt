@@ -1,5 +1,5 @@
 . ~/local/news/bin/activate
-cd ~/geo-dev/test/news/newssrv
+cd ~/local/news/newssrv
 ./manage.py newssavesources
 ./manage.py sqlclear feeds | ./manage.py dbshell
 

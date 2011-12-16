@@ -70,6 +70,8 @@ class Command(BaseCommand):
         if len(language):
             source.language = tree.xpath('/rss/channel/language')[0].text
 
+        #if source.icon
+
         source.save()
 
     def update_article(self, item, source):

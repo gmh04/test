@@ -119,7 +119,7 @@ $(function() {
 
     if (country !== undefined && source !== undefined){
         console.log('=>');
-        editSource('GB', 1 );
+        editSource(country, source);
     }
 });
 

@@ -6,13 +6,15 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 
-import json
-import urllib2
-
 from urllib2 import URLError, HTTPError
 from xml.dom.minidom import parse, parseString
 
+import json
+import os
+import urllib2
+
 from newssrv.feeds.models import Source, Article
+from newssrv import settings
 
 def fetch_all_countries(request):
     countries = []
@@ -32,11 +34,6 @@ def fetch_sources_by_country(request, country_id):
 
 def _handle_uploaded_file(f, name):
 
-    #new_name = '%d.%s' % (source_id, f.name.split('.')[1])
-    #print f.__class__
-    #print dir(f)
-    from newssrv import settings
-    import os
     destination = open(
         os.sep.join((settings.STATIC_ROOT, 'icons', name)),
         'wb+')
