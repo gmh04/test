@@ -68,7 +68,13 @@ class Command(BaseCommand):
 
         language = tree.xpath('/rss/channel/language')
         if len(language):
-            source.language = tree.xpath('/rss/channel/language')[0].text
+            source.language = language[0].text
+
+        # only update icon once
+        if not source.icon:
+            icon = tree.xpath('/rss/channel/image/url')
+            if len(icon):
+                source.icon = icon[0].text
 
         #if source.icon
 
