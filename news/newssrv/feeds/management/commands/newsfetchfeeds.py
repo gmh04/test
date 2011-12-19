@@ -70,13 +70,9 @@ class Command(BaseCommand):
         if len(language):
             source.language = language[0].text
 
-        # only update icon once
-        if not source.icon:
-            icon = tree.xpath('/rss/channel/image/url')
-            if len(icon):
-                source.icon = icon[0].text
-
-        #if source.icon
+        icon = tree.xpath('/rss/channel/image/url')
+        if len(icon):
+            source.icon = icon[0].text
 
         source.save()
 
@@ -91,12 +87,9 @@ class Command(BaseCommand):
             gid = url
 
         if not Article.objects.select_related().filter(source=source, gid=gid):
-            # only insert if article is new
-            #self.update_article(item, gid, source)
 
             title = item.find('title').text
             description = item.find('description').text
-            #url = item.find('link').text
 
             datestr = item.find('pubDate').text
             pub_date = self.str2date(datestr)

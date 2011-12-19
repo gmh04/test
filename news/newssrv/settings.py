@@ -16,7 +16,7 @@ MANAGERS = ADMINS
 PROJECT_ROOT = os.path.dirname(__file__)
 
 config = RawConfigParser()
-config_file = os.path.expanduser(os.sep.join(('~', '.news', 'config.ini')))
+config_file = os.path.expanduser(os.sep.join(('/home', 'gmh04', '.news', 'config.ini')))
 config.read(config_file)
 
 hostname = socket.gethostname()

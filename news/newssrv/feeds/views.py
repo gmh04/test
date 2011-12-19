@@ -49,12 +49,6 @@ def edit_source(request, source_id):
 
     icon = None
 
-    #new_name = '%d.%s' % (source_id,
-    #icon_name = os.sep.join((settings.STATIC_ROOT, 'icons', new_name))
-    # file_name = '%s-%s' % (source.id, source.icon)
-    #if(os.path.exists(icon_name)):
-    #    icon = '/static/icons/%s' % file_name
-
     from newssrv.feeds.forms import EditSource
 
     if request.method == 'POST':
@@ -73,19 +67,17 @@ def edit_source(request, source_id):
             print form.errors
     else:
         # form = EditSource(instance=source)
+        if '/' in source.feed_url:
+            source_icon =  source.feed_url
+        else:
+            source_icon = '/static/icons/%s' % source.feed_url
+            
         form = EditSource(initial={'feed_url': source.feed_url})
 
     return render_to_response('edit_source.html',
                               {'source': source,
                                'form': form},
                               context_instance=RequestContext(request))
-    # return render_to_response('edit_source.html',
-    #                           {'source': source,
-    #                            'form': form})
-
-    # return render_to_response('edit_source.html',
-    #                           {'source': source,
-    #                            'icon': icon})
 
 def fetch_feeds_by_source(request, id):
     sdict = {}
@@ -108,18 +100,21 @@ def fetch_feeds_by_source(request, id):
 def fetch_articles(request, id):
     country = None
     articles = None
+    source_icon = None
 
     try:
         #country = Source.objects.get(country=id).country
         country = Country(code=id)
         articles = Article.objects.filter(
             source__country=id).order_by('-date')[:20]
+        source_icon = _get_source_icon(articles[0].source)
     except ObjectDoesNotExist:
         #country = Country(code=id)
         pass
-
+    print '***', source_icon
     return render_to_response('articles.html', {'articles': articles,
-                                                'country': country})
+                                                'country': country,
+                                                'source_icon': source_icon})
 
 
 def suggest_feed(request, country_id):
@@ -149,5 +144,12 @@ def suggest_feed(request, country_id):
 
     return render_to_response('suggest_response.html',
                               {'success': success,
-                               'message': message})
+                               'message': message},
+                              context_instance=RequestContext(request))
+def _get_source_icon(source):
+    if '/' in source.feed_url:
+        source_icon = source.icon
+    else:
+        source_icon = '/static/icons/%s' % source.feed_icon
 
+    return source_icon

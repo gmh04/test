@@ -172,20 +172,22 @@ function editSource(country, source){
     });
 }
 
-function fetch_feed(){
-    if($('#view-btn').is(":visible")){
-        url = '/feed/edit/' + country.id;
-    }
-    else{
-        url = '/feed/' + country.id;
-    }
+// function fetchFeed(){
+//     if($('#view-btn').is(":visible")){
+//         url = '/feed/edit/' + country.id;
+//     }
+//     else{
+//         url = '/feed/' + country.id;
+//     }
 
-    $.get(url, function(sources) {
-        $('#feed-content').html(sources);
-        $("#feed-content ul").listview();
-        $("#suggest-feed-form").submit(submitFeedSugestion);
-    });
-}
+//     $.get(url, function(sources) {
+//         $('#feed-content').html(sources);
+//         //$("#feed-content ul").listview();
+//         $("#suggest-feed-form").submit(submitFeedSugestion);
+
+//         $("#feed-content").trigger('create')
+//     });
+// }
 
 function initMap(location){
     map = new OpenLayers.Map("map");
@@ -273,10 +275,8 @@ function initMap(location){
                         url = '/feed/' + country.id;
                     }
 
-                    //url = '/feed/' + country.id;
                     $.get(url, function(sources) {
-                        $('#feed-content').html(sources);
-                        $("#feed-content ul").listview();
+                        $('#feed-content').html(sources).trigger('create');
                         $("#suggest-feed-form").submit(submitFeedSugestion);
                     });
                 }

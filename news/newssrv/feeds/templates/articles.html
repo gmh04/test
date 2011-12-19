@@ -4,7 +4,7 @@
   {% for article in articles %}
   <li id="feed-article-{{ article.id }}" title="{{ article.description|truncatewords:20}}">
     <a href="{{ article.url }}">
-      <img class="ui-li-icon" src="/static/icons/{{ article.source.icon }}"/>
+      <img class="ui-li-icon" src="{{ source_icon }}"/>
       <h3>{{ article.title }}</h3>
       <p>{{ article.date }}</p>
       <a href="#" class="article-remove" data-rel="dialog" data-transition="slideup">Remove</a>
@@ -17,3 +17,4 @@
 <h3>No News from {{ country.name }}</h3>
 {% include "suggest.html" with country_id="{{ country.code }}" %}
 {% endif %}
+
