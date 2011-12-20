@@ -55,8 +55,7 @@ def edit_source(request, source_id):
         form = EditSource(request.POST, request.FILES)
         if form.is_valid():
             f = request.FILES['icon']
-            icon_name = '%s.%s' % (source_id, f.name.split('.')[1])
-
+            icon_name = os.sep.join((settings.ICONS_ROOT, '%s.%s' % source_id, f.name.split('.')[1]))
             _handle_uploaded_file(f, icon_name)
 
             source.feed_url = form.cleaned_data['feed_url']
@@ -71,7 +70,7 @@ def edit_source(request, source_id):
             source_icon =  source.feed_url
         else:
             source_icon = '/static/icons/%s' % source.feed_url
-            
+
         form = EditSource(initial={'feed_url': source.feed_url})
 
     return render_to_response('edit_source.html',
@@ -103,29 +102,31 @@ def fetch_articles(request, id):
     source_icon = None
 
     try:
-        #country = Source.objects.get(country=id).country
         country = Country(code=id)
         articles = Article.objects.filter(
             source__country=id).order_by('-date')[:20]
-        source_icon = _get_source_icon(articles[0].source)
     except ObjectDoesNotExist:
         #country = Country(code=id)
         pass
-    print '***', source_icon
+
     return render_to_response('articles.html', {'articles': articles,
                                                 'country': country,
-                                                'source_icon': source_icon})
+                                                'source_icon': source_icon},
+                              context_instance=RequestContext(request))
 
 
 def suggest_feed(request, country_id):
     success = False
     message = None
 
+    print request.POST
+    print request.GET
     url = request.GET['url']
-
+    print url
     validate = URLValidator(verify_exists=False)
+
     try:
-        print validate(request.GET['url'])
+        validate(url)
         try:
             urllib2.urlopen(url)
 
@@ -146,10 +147,4 @@ def suggest_feed(request, country_id):
                               {'success': success,
                                'message': message},
                               context_instance=RequestContext(request))
-def _get_source_icon(source):
-    if '/' in source.feed_url:
-        source_icon = source.icon
-    else:
-        source_icon = '/static/icons/%s' % source.feed_icon
 
-    return source_icon

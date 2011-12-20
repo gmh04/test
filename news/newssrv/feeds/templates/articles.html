@@ -4,7 +4,9 @@
   {% for article in articles %}
   <li id="feed-article-{{ article.id }}" title="{{ article.description|truncatewords:20}}">
     <a href="{{ article.url }}">
-      <img class="ui-li-icon" src="{{ source_icon }}"/>
+      {% if article.source.icon %}
+      <img class="ui-li-icon" src="{{ article.source.icon }}"/>
+      {% endif %}
       <h3>{{ article.title }}</h3>
       <p>{{ article.date }}</p>
       <a href="#" class="article-remove" data-rel="dialog" data-transition="slideup">Remove</a>

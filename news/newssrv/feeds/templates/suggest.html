@@ -1,7 +1,7 @@
 <div id="suggest-feed" data-role="content">
-  <form id="suggest-feed-form" method="post">
+  <form action="{% url  newssrv.feeds.views.suggest_feed country.code %}" id="suggest-feed-form" method="post"> {% csrf_token %}
     <p>Suggest a news feed:</p>
-    <input type="hidden" id="suggest-country" value="{{ country.code }}"/>
+    <!-- <input type="hidden" id="suggest-country" value="{{ country.code }}"/> -->
     Url: <input type="text" name="url" />
     <input type="submit" value="Submit" />
 

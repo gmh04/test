@@ -12,16 +12,24 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
 PROJECT_ROOT = os.path.dirname(__file__)
-
-config = RawConfigParser()
-config_file = os.path.expanduser(os.sep.join(('/home', 'gmh04', '.news', 'config.ini')))
-config.read(config_file)
 
 hostname = socket.gethostname()
 
-if hostname == 'ip-10-227-51-57':
+def is_live():
+    return hostname == 'ip-10-227-51-57'
+
+config = RawConfigParser()
+
+if is_live():
+    config_file = '/home/gmh04/news/config.ini'
+else:
+    config_file = os.path.expanduser(os.sep.join((os.path.expanduser('~'), '.news', 'config.ini')))
+
+config.read(config_file)
+
+
+if is_live():
     DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -139,11 +147,13 @@ INSTALLED_APPS = (
     'newssrv.feeds',
 )
 
-STATICFILES_DIRS = (
-     os.sep.join((PROJECT_ROOT, 'static')),
-)
+
 STATIC_ROOT = os.sep.join((PROJECT_ROOT, 'static'))
+STATICFILES_DIRS = (
+    STATIC_ROOT,
+)
 STATIC_URL = '/static'
+ICONS_ROOT = os.sep.join((STATIC_ROOT, 'icons'))
 
 # smtp settings
 EMAIL_HOST = 'smtp.gmail.com'

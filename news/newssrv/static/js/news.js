@@ -188,6 +188,47 @@ function editSource(country, source){
 //         $("#feed-content").trigger('create')
 //     });
 // }
+function submitFeedSugestion(){
+    // var feed_url = $('#suggest-feed-form input[name="action"]').val()
+    // var feed_url = $('#suggest-feed-form input[name="url"]').val()
+    var feed_url = $(this).find('input[name="url"]').val();
+
+    console.log(feed_url);
+    console.log(this.action);
+
+    if (feed_url.length > 0) {
+        //var action = this.action;
+        var data = {
+            'url': feed_url
+        }
+
+        $.ajax({
+            url: this.action,
+            //type: 'GET',
+            //url: feed_url,
+            data: data,
+            success: function(response){
+                //console.log('->' + resp);
+                //response = resp;
+                $('#suggest-feed-response').html(response);
+            },
+            //dataType: dataType
+            error: function(response) {
+                $('#suggest-feed-response').html(response);
+            },
+            headers: {
+                'X-CSRFToken': $(this).find('input[name="csrfmiddlewaretoken"]').val(),
+            },
+        });
+    }
+    else{
+        response = 'Invalid URL';
+    }
+
+    //$('#suggest-feed-response').html(response);
+
+    return false;
+}
 
 function initMap(location){
     map = new OpenLayers.Map("map");
