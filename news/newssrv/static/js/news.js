@@ -1,5 +1,7 @@
 var map;
 
+var doHover = true;
+
 SERVER_URL='/srv'
 
 $(function() {
@@ -30,21 +32,9 @@ $(function() {
         $('#' + id).slideUp('slow');
     });
 
-    // url = SERVER_URL + '/menu';
-    // $.get(url, function(menu) {
-    //     $('#footer').append(menu).page();
-    // });
-
-    // $('#loginx-btn').live('click', function(event){
-    //     console.log('-<');
-    // });
-
-    // $('a[name=modal]').click(function(e) {
     $('#login-btn').live('click', function(e){
-        //Cancel the link behavior
+        // cancel the link behavior
         e.preventDefault();
-        //Get the A tag
-        //var id = $(this).attr('href');
 
         //Get the screen height and width
         var maskHeight = $(document).height();
@@ -62,9 +52,6 @@ $(function() {
         var winW = $(window).width();
 
         //Set the popup window to center
-        //$(id).css('top',  winH/2-$(id).height()/2);
-        //$(id).css('left', winW/2-$(id).width()/2);
-        //console.log(winH/2-$(id).height()/2);
         $('#dialog').css('top',  winH/2-$('#dialog').height()/2);
         $('#dialog').css('left', winW/2-$('#dialog').width()/2);
 
@@ -95,9 +82,6 @@ $(function() {
     });
 
     $('#view-btn').hide();
-
-    //$.mobile.ajaxEnabled = false;
-    //$.mobile.ajaxFormsEnabled = false;
 
     var e,
     a = /\+/g,  // Regex for replacing addition symbol with a space
@@ -135,22 +119,12 @@ function get_country(event, func){
     var jqxhr = $.get(url, function(data) {
         if (data.status === 'OK'){
             if (data.results.length > 0){
-                // take first result
-                var ac = data.results[0].address_components;
-                for (var i = 0; i < ac.length; i++){
-                    if (ac[i].types[0] === 'country'){
-                        // selection = {
-                        //     'id': ac[i].short_name,
-                        //     'name': ac[i].long_name
-                        // }
-                        selection['id'] = ac[i].short_name;
-                        selection['name'] = ac[i].long_name
-                        //break;
-                    }
-                    else if (ac[i].types[0] === 'administrative_area_level_1'){
-                        selection['region'] = ac[i].short_name;
-                    }
-                }
+                country = data.results[data.results.length - 1];
+                selection['id'] = country.address_components[0].short_name;
+                selection['name'] = country.address_components[0].long_name;
+
+                region = data.results[data.results.length - 2];
+                selection['region'] = region.address_components[0].short_name;
 
                 func(selection);
             }
@@ -172,49 +146,25 @@ function editSource(country, source){
     });
 }
 
-// function fetchFeed(){
-//     if($('#view-btn').is(":visible")){
-//         url = '/feed/edit/' + country.id;
-//     }
-//     else{
-//         url = '/feed/' + country.id;
-//     }
-
-//     $.get(url, function(sources) {
-//         $('#feed-content').html(sources);
-//         //$("#feed-content ul").listview();
-//         $("#suggest-feed-form").submit(submitFeedSugestion);
-
-//         $("#feed-content").trigger('create')
-//     });
-// }
 function submitFeedSugestion(){
-    // var feed_url = $('#suggest-feed-form input[name="action"]').val()
-    // var feed_url = $('#suggest-feed-form input[name="url"]').val()
     var feed_url = $(this).find('input[name="url"]').val();
 
-    console.log(feed_url);
-    console.log(this.action);
-
     if (feed_url.length > 0) {
-        //var action = this.action;
         var data = {
             'url': feed_url
         }
-
+        $.mobile.showPageLoadingMsg();
         $.ajax({
             url: this.action,
-            //type: 'GET',
-            //url: feed_url,
             data: data,
             success: function(response){
-                //console.log('->' + resp);
-                //response = resp;
                 $('#suggest-feed-response').html(response);
+                $.mobile.hidePageLoadingMsg();
             },
             //dataType: dataType
             error: function(response) {
                 $('#suggest-feed-response').html(response);
+                $.mobile.hidePageLoadingMsg();
             },
             headers: {
                 'X-CSRFToken': $(this).find('input[name="csrfmiddlewaretoken"]').val(),
@@ -225,9 +175,11 @@ function submitFeedSugestion(){
         response = 'Invalid URL';
     }
 
-    //$('#suggest-feed-response').html(response);
-
     return false;
+}
+
+function enableHover(enableHover){
+    doHover = enableHover;
 }
 
 function initMap(location){
@@ -256,22 +208,22 @@ function initMap(location){
         },
 
         onPause: function(e) {
+            console.log('hover ' + doHover);
+            if(doHover){
+                get_country(e, function(country){
+                    if(country){
+                        var text;
+                        if(country.region === undefined){
+                            text = country.name;
+                        }
+                        else{
+                            text = country.region + ", " +  country.name;
+                        }
 
-            get_country(e, function(country){
-                if(country){
-                    if(country.region === undefined){
-                        //$('#header').html('<h1>' + country.name + '</h1>');
-                        var text = country.name;
+                        $('#header h1').text(text);
                     }
-                    else{
-                        //$('#header').html('<h1>' + country.region + ", " +  country.name + '</h1>');
-                        //$('#header h1').text(country.region + ", " +  country.name);
-                        var text = country.region + ", " +  country.name;
-                    }
-
-                    $('#header h1').text(text);
-                }
-            });
+                });
+            }
         },
 
         onMove: function(evt) {
@@ -305,25 +257,26 @@ function initMap(location){
         },
 
         trigger: function(e) {
-            $.mobile.showPageLoadingMsg()
+            doHover = false;
+            $.mobile.showPageLoadingMsg();
             get_country(e, function(country){
                 if(country){
-
                     if($('#view-btn').is(":visible")){
                         url = '/feed/edit/' + country.id;
                     }
                     else{
                         url = '/feed/' + country.id;
                     }
-
                     $.get(url, function(sources) {
                         $('#feed-content').html(sources).trigger('create');
                         $("#suggest-feed-form").submit(submitFeedSugestion);
+                        doHover = true;
+                        $.mobile.hidePageLoadingMsg();
                     });
                 }
             });
 
-            $.mobile.hidePageLoadingMsg()
+            //$.mobile.hidePageLoadingMsg()
         }
     });
 

@@ -1,5 +1,9 @@
 {% if success %}
-<p>Thanks for suggesting a news source. The articles will be indexed shortly.</p>
+<div class="info-text">
+  <p>Thanks for suggesting a news source. The articles will be indexed shortly.</p>
+</div>
 {% else %}
-<p>There was a problem with the news source: {{ message }}.</p>
+<div class="error-text">
+  <p>There was a problem with the news source: {{ message }}.</p>
+</div>
 {% endif %}

@@ -8,7 +8,7 @@ html,body {
 }
 
 #feed{
-    height: 100%%;
+    height: 100%;
     width: 33%;
     float: left;
     overflow: auto !important;
@@ -18,21 +18,17 @@ html,body {
     margin-left: 1.3em;
 }
 
-#main{ 
+#main{
     height: 100%;
     width: 60%;
     float: right;
-    /* border: solid red 1px; */
 }
-/* #login-dialog{ */
-/*     display:none; */
-/* } */
 
 .hidden {
     display: none;
 }
 
-#map{ 
+#map{
     height: 100%;
     width: 100%;
 }
@@ -40,6 +36,14 @@ html,body {
 /* #container{ */
 /*     display: none; */
 /* } */
+
+.info-text{
+    color: green;
+}
+
+.error-text{
+    color: red;
+}
 
 #footer{
     /* clear: both; */
@@ -62,8 +66,8 @@ div.olControlPanZoomBar{
 }
 
 
-.ui-loader{
-    z-index: 1000;
+body .ui-loader{
+    z-index: 10000;
 }
 
 #mask {
@@ -72,7 +76,7 @@ div.olControlPanZoomBar{
     background-color:#000;
     display:none;
     color: white;
-}   
+}
 #boxes .window {
     position:absolute;
     width:440px;

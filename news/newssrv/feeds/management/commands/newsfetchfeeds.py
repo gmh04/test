@@ -74,6 +74,8 @@ class Command(BaseCommand):
         if len(icon):
             source.icon = icon[0].text
 
+        #print source.icon, len(source.icon)
+
         source.save()
 
     def update_article(self, item, source):
