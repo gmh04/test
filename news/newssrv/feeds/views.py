@@ -103,7 +103,7 @@ def fetch_articles(request, id):
     try:
         country = Country(code=id)
         articles = Article.objects.filter(
-            source__country=id).order_by('-date')[:200]
+            source__country=id).order_by('-date')[:20]
     except ObjectDoesNotExist:
         #country = Country(code=id)
         pass

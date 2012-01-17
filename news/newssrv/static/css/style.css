@@ -65,9 +65,12 @@ div.olControlPanZoomBar{
     float: right;
 }
 
-
 body .ui-loader{
     z-index: 10000;
+}
+
+#sharethis{
+    float: right;
 }
 
 #mask {
@@ -77,6 +80,7 @@ body .ui-loader{
     display:none;
     color: white;
 }
+
 #boxes .window {
     position:absolute;
     width:440px;
@@ -85,6 +89,7 @@ body .ui-loader{
     z-index:9999;
     padding:20px;
 }
+
 #boxes #dialog {
     position:absolute;
     top: 100px;
