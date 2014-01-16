@@ -1,5 +1,5 @@
 from edina.admin import Fabric
-from fabric.api import hosts, env, cd
+from fabric.api import cd, env, hosts, run
 
 from fabric.contrib.project import rsync_project
 
@@ -35,3 +35,23 @@ def deploy_live():
 def restore():
     Fabric('news').restore('newssrv')
 
+@hosts('gmh04@ec2-46-137-0-34.eu-west-1.compute.amazonaws.com')
+def upgrade_database():
+    fab = Fabric('news')
+    appdir = os.sep.join((fab.proj_dir, 'newssrv'))
+    with cd(appdir):
+        # save current data
+        tmp = os.sep.join((run('echo $HOME'), 'tmp/'))
+        fab.venvremote('%s/manage.py newssavesources' % appdir)
+        run('cp %s %s' % (os.sep.join((appdir, 'initial_data.json')) , tmp))
+
+        # drop tables
+        fab.venvremote('./manage.py sqlclear feeds | ./manage.py dbshell')
+
+        # deploy latest
+        deploy_live()
+
+        # restore database
+        run('cp %s .' % os.sep.join((tmp, 'initial_data.json')))
+        fab.venvremote('./manage.py syncdb')
+        fab.venvremote('./manage.py newsfetchfeeds')

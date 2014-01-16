@@ -96,7 +96,9 @@ class Command(BaseCommand):
             datestr = item.find('pubDate').text
             pub_date = self.str2date(datestr)
 
-            print 'add %s: %s' % (title, gid)
+            from django.utils.encoding import smart_str, smart_unicode
+            #print 'add %s: %s' % (title, gid)
+            print smart_str('add %s: %s' % (title, gid))
 
             Article.objects.create(source=source,
                                    gid=gid,

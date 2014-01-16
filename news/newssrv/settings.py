@@ -24,10 +24,9 @@ config = RawConfigParser()
 if is_live():
     config_file = '/home/gmh04/.news/config.ini'
 else:
-    config_file = os.path.expanduser(os.sep.join((os.path.expanduser('~'), '.news', 'config.ini')))
+    config_file = '/home/ghamilt2/.news/config.ini'
 
 config.read(config_file)
-
 
 if is_live():
     DATABASES = {

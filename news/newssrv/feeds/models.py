@@ -15,8 +15,8 @@ class Source(models.Model):
 
 class Article(models.Model):
     source = models.ForeignKey(Source)
-    title = models.CharField(max_length=128)
-    gid = models.CharField(max_length=128)
+    title = models.CharField(max_length=256)
+    gid = models.CharField(max_length=256)
     description = models.TextField()
     date = models.DateTimeField()
-    url = models.CharField(max_length=128)
+    url = models.CharField(max_length=256)

@@ -6,7 +6,7 @@ import sys
 sys.stdout = sys.stderr
 
 if socket.gethostname() == 'dlib-oxgangs.ucs.ed.ac.uk':
-    newshome = '/home/george/local/news'
+    newshome = '/home/ghamilt2/local/news'
 else:
     newshome = '/home/gmh04/local/news'
 

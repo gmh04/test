@@ -1,14 +1,14 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 
-<html> 
-  <head> 
-    <title>World of News</title> 	
+<html>
+  <head>
+    <title>World of News</title>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="description" content="Map based world news aggregator" /> 
-    <meta name="keywords" content="news curent affairs map osm media" /> 
+    <meta name="description" content="Map based world news aggregator" />
+    <meta name="keywords" content="news curent affairs map osm media" />
 
     <link rel="stylesheet" href="{{ STATIC_URL }}/css/jquery.mobile.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}/css/style.css" />
@@ -20,31 +20,31 @@
     <script type="text/javascript" src="{{ STATIC_URL }}/js/jquery.geolocation.js"></script>
 
     <script type="text/javascript">
-      
+
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-27620755-1']);
       _gaq.push(['_trackPageview']);
-      
+
       (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http:///www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-      
+
     </script>
 
-  </head> 
-  
+  </head>
+
   <body>
     <noscript><p>JavaScript must be enabled to use this page</p></noscript>
 
     <div id="header" data-role="header" >
       <h1>World of News</h1>
-    </div> 
-    
+    </div>
+
     <div id="feed" data-role="content" >
       <div id="feed-content" >
-        <p>Click on a country on the map to fetch news</p>
+        <p>Click on the map to fetch news for that country</p>
       </div>
     </div>
 
@@ -65,7 +65,7 @@
       <a href="http://validator.w3.org/check?uri=referer">html</a>
       <a href="http://jigsaw.w3.org/css-validator/check/referer">css</a>
     </div>
- 
+
   </body>
 
 </html>
