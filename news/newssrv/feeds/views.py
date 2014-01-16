@@ -55,7 +55,7 @@ def edit_source(request, source_id):
         form = EditSource(request.POST, request.FILES)
         if form.is_valid():
             f = request.FILES['icon']
-            icon_name = os.sep.join((settings.ICONS_ROOT, '%s.%s' % source_id, f.name.split('.')[1]))
+            icon_name = '%s.%s' % (source_id, f.name.split('.')[1])
             _handle_uploaded_file(f, icon_name)
 
             source.feed_url = form.cleaned_data['feed_url']
@@ -65,7 +65,6 @@ def edit_source(request, source_id):
         else:
             print form.errors
     else:
-        # form = EditSource(instance=source)
         if '/' in source.feed_url:
             source_icon =  source.feed_url
         else:
@@ -99,7 +98,7 @@ def fetch_feeds_by_source(request, id):
 def fetch_articles(request, id):
     country = None
     articles = None
-    source_icon = None
+    icon_dir = '%s/icons' % settings.STATIC_URL
 
     try:
         country = Country(code=id)
@@ -111,7 +110,7 @@ def fetch_articles(request, id):
 
     return render_to_response('articles.html', {'articles': articles,
                                                 'country': country,
-                                                'source_icon': source_icon},
+                                                'icon_dir': icon_dir},
                               context_instance=RequestContext(request))
 
 

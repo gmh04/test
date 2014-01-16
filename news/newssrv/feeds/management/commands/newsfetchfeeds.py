@@ -61,8 +61,12 @@ class Command(BaseCommand):
 
     def update_source(self, tree, source):
         # update source incase it has changed
-        source.last_updated = self.str2date(
-            tree.xpath('/rss/channel/lastBuildDate')[0].text)
+        lastBuildDate = tree.xpath('/rss/channel/lastBuildDate')
+        if len(lastBuildDate):
+            source.last_updated = self.str2date(lastBuildDate[0].text)
+        else:
+             source.last_updated = datetime.utcnow()
+
         source.name = tree.xpath('/rss/channel/title')[0].text
         source.site_url = tree.xpath('/rss/channel/link')[0].text
 
